@@ -23,7 +23,7 @@
 	};
 	// Drawer Handler
 	function drawerOpen(): void {
-		const s: DrawerSettings = { id: 'doc-sidenav' };
+		const s: DrawerSettings = { id: 'sidenav', width: 'w-fit' };
 		drawerStore.open(s);
 	}
 </script>

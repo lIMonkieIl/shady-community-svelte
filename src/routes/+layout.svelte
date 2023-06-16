@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Drawer from './../lib/components/Drawer.svelte';
 	import Sidebar from './../lib/components/Sidebar.svelte';
 	// The ordering of these imports is critical to the app working properly
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
@@ -110,6 +111,8 @@
 	{@html `\<style\>${currentTheme}}\</style\>`}
 </svelte:head>
 
+<Drawer />
+
 <AppShell>
 	<!-- Header -->
 	<svelte:fragment slot="header">
@@ -119,7 +122,7 @@
 
 	<!-- Sidebar (Left) -->
 	<svelte:fragment slot="sidebarLeft">
-		<Sidebar />
+		<Sidebar className={'hidden lg:block'} />
 	</svelte:fragment>
 
 	<!-- Page Content -->

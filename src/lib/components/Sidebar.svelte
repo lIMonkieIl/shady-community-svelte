@@ -7,10 +7,11 @@
 		currentRailCategory = undefined;
 		drawerStore.close();
 	}
+	export let className = '';
 </script>
 
 <!-- App Rail -->
-<AppRail border="border-r hidden lg:block border-surface-500/30">
+<AppRail background={className} border="border-r border-surface-500/30">
 	<!-- Mobile Only -->
 	<!-- prettier-ignore -->
 	<AppRailAnchor href="/"  on:click={() => { onClickAnchor() }}>
