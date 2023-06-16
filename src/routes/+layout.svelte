@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ThemeChanger from './../lib/components/ThemeChanger.svelte';
 	import Drawer from './../lib/components/Drawer.svelte';
 	import Sidebar from './../lib/components/Sidebar.svelte';
 	// The ordering of these imports is critical to the app working properly
@@ -122,12 +123,18 @@
 
 	<!-- Sidebar (Left) -->
 	<svelte:fragment slot="sidebarLeft">
-		<Sidebar className={'hidden lg:block'} />
+		<Sidebar class={'hidden lg:block'} />
 	</svelte:fragment>
-
+	<!-- Page Header -->
+	<svelte:fragment slot="pageHeader"><div class="min-h-[15px]" /></svelte:fragment>
 	<!-- Page Content -->
 	<slot />
 
 	<!-- Page Footer -->
 	<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
+	<svelte:fragment slot="footer">
+		<div class="absolute bottom-2 right-2">
+			<ThemeChanger />
+		</div>
+	</svelte:fragment>
 </AppShell>

@@ -1,40 +1,55 @@
 <script lang="ts">
+	import BigLogoStack from '$lib/components/BigLogoStack.svelte';
 	import { page } from '$app/stores';
-	import { AppRail, AppRailAnchor, AppRailTile, drawerStore } from '@skeletonlabs/skeleton';
+	import { AppRail, AppRailAnchor, AppRailTile, drawerStore, popup } from '@skeletonlabs/skeleton';
+	import SmallLogo from './SmallLogo.svelte';
+	import ThemeChanger from './ThemeChanger.svelte';
 	// Local
-	let currentRailCategory: string | undefined;
 	function onClickAnchor(): void {
-		currentRailCategory = undefined;
 		drawerStore.close();
 	}
 	export let className = '';
+	export { className as class };
+	let currentTile: number = 0;
 </script>
 
 <!-- App Rail -->
-<AppRail background={className} border="border-r border-surface-500/30">
-	<!-- Mobile Only -->
-	<!-- prettier-ignore -->
-	<AppRailAnchor href="/"  on:click={() => { onClickAnchor() }}>
+<AppRail
+	class={`${
+		$drawerStore.id === 'sidenav' && $drawerStore.open ? 'w-fit' : 'lg:w-24'
+	}  ${className}`}
+	border={`border-r border-surface-500/30`}
+>
+	<svelte:fragment slot="lead">
+		{#if $drawerStore.id === 'sidenav' && $drawerStore.open}
+			<AppRailAnchor href="/">
+				<BigLogoStack size={'scale-50 -m-12'} />
+			</AppRailAnchor>
+		{/if}
+	</svelte:fragment>
+
+	<div class="m-2 overflow-hidden rounded-container-token">
+		<!-- prettier-ignore -->
+		<AppRailAnchor href="/" selected={$page.url.pathname === '/'} on:click={() => { onClickAnchor() }}>
 			<svelte:fragment slot="lead"><i class="fa-solid fa-home text-2xl" /></svelte:fragment>
 			<span>Home</span>
 		</AppRailAnchor>
-	<!-- prettier-ignore -->
-	<AppRailAnchor href="/about"  on:click={() => { onClickAnchor() }}>
-			<svelte:fragment slot="lead"><i class="fa-solid fa-bullhorn text-2xl" /></svelte:fragment>
+	</div>
+	<div class="m-2 overflow-hidden rounded-container-token">
+		<!-- prettier-ignore -->
+		<AppRailAnchor href="/about" selected={$page.url.pathname === '/about'}  on:click={() => { onClickAnchor() }}>
+			<svelte:fragment slot="lead"><i class="fa-solid fa-circle-info text-2xl"></i></svelte:fragment>
 			<span>About</span>
 		</AppRailAnchor>
+	</div>
+
 	<!-- --- / --- -->
 	<hr class="opacity-30" />
-	<AppRailTile bind:group={currentRailCategory} name="elements" value={'/elements'}>
-		<svelte:fragment slot="lead">(ICON)</svelte:fragment>
-		<span>Mixer</span>
-	</AppRailTile>
-	<AppRailTile bind:group={currentRailCategory} name="svelte" value={'/svelte'}>
-		<svelte:fragment slot="lead"><i class="fa-solid fa-readme" /></svelte:fragment>
-		<span>Svelte</span>
-	</AppRailTile>
-	<AppRailTile bind:group={currentRailCategory} name="utilities" value={'/utilities'}>
-		<svelte:fragment slot="lead">(ICON)</svelte:fragment>
-		<span>Utilities</span>
-	</AppRailTile>
+	<div class="m-2 overflow-hidden rounded-container-token">
+		<!-- prettier-ignore -->
+		<AppRailAnchor href="/mixer" selected={$page.url.pathname === '/mixer'} on:click={() => { onClickAnchor() }}>
+			<svelte:fragment slot="lead"><i class="fa-solid fa-blender text-2xl" /></svelte:fragment>
+			<span>Mixer</span>
+		</AppRailAnchor>
+	</div>
 </AppRail>
