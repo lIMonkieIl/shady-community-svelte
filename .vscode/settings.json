@@ -1,7 +1,6 @@
 {
-	"prettier.documentSelectors": [
-		"**/*.svelte"
-	],
+	"prettier.documentSelectors": ["**/*.svelte"],
+
 	"tailwindCSS.classAttributes": [
 		"class",
 		"accent",
@@ -100,6 +99,7 @@
 		"text",
 		"track",
 		"width",
-		"zIndex"
+		"zIndex",
+		"s_class"
 	]
 }

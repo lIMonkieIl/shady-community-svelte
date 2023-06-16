@@ -1,4 +1,6 @@
 <script lang="ts">
+	import BigLogo from '$lib/components/BigLogo.svelte';
+	import { page } from '$app/stores';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import {
 		AppBar,
@@ -7,26 +9,15 @@
 		popup,
 		LightSwitch
 	} from '@skeletonlabs/skeleton';
-	import { storeTheme, type themeTypes } from '$lib/stores/stores';
+	import { customThemes, skeletonThemes, storeTheme } from '$lib/stores/stores';
 	import { enhance } from '$app/forms';
-	const themes = [
-		{ type: 'skeleton', name: 'Skeleton', icon: '💀' },
-		{ type: 'modern', name: 'Modern', icon: '🤖' },
-		{ type: 'rocket', name: 'Rocket', icon: '🚀' },
-		{ type: 'seafoam', name: 'Seafoam', icon: '🧜‍♀️' },
-		{ type: 'vintage', name: 'Vintage', icon: '📺' },
-		{ type: 'sahara', name: 'Sahara', icon: '🏜️' },
-		{ type: 'hamlindigo', name: 'Hamlindigo', icon: '👔' },
-		{ type: 'gold-nouveau', name: 'Gold Nouveau', icon: '💫' },
-		{ type: 'crimson', name: 'Crimson', icon: '⭕' }
-		// { type: 'custom', name: 'Custom', icon: '🚧' },
-	];
+	const themes = [...skeletonThemes, ...customThemes];
 	const setTheme: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			await update();
 			if (result.type === 'success') {
-				const theme = result.data?.theme as themeTypes;
-				storeTheme.set(theme);
+				const theme = result.data?.theme;
+				storeTheme.actions.setTheme(theme);
 			}
 		};
 	};
@@ -34,7 +25,7 @@
 
 <AppBar shadow="shadow-xl">
 	<svelte:fragment slot="lead">
-		<div class="flex items-center space-x-4" />
+		<BigLogo size="scale-75 -m-10" />
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<!-- Theme -->
@@ -68,7 +59,7 @@
 											class:bg-primary-active-token={$storeTheme === type}
 										>
 											<span>{icon}</span>
-											<span>{name}</span>
+											<span class="capitalize">{name}</span>
 										</button>
 									</li>
 								{/each}

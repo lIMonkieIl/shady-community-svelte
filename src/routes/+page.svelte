@@ -1,12 +1,16 @@
 <script>
-	import { storeTheme } from '$lib/stores/stores';
+	import BigLogo from '$lib/components/BigLogo.svelte';
+	import BigLogoStack from '$lib/components/BigLogoStack.svelte';
+	import SmallLogo from './../lib/components/SmallLogo.svelte';
 </script>
 
-<button class="btn variant-filled">test 1</button>
-<button class="btn variant-filled-primary">test 2</button>
-<button class="btn variant-filled-secondary">test 3</button>
-<button class="btn variant-filled-surface">test 4</button>
-<button class="btn variant-ghost">test 5</button>
-<button class="btn variant-ghost-surface">test 6</button>
-<button class="btn variant-soft">test 7</button>
-<button class="btn variant-soft-surface">test 8</button>
+<SmallLogo size={'scale-100'} />
+<SmallLogo size={'scale-90'} />
+<SmallLogo size={'scale-75'} />
+<SmallLogo size={'scale-50'} />
+
+<BigLogo size={'scale-100'} />
+<BigLogo size={'scale-90'} />
+<BigLogo size={'scale-75'} />
+<BigLogo size={'scale-50'} />
+<BigLogoStack size={'scale-100'} />
