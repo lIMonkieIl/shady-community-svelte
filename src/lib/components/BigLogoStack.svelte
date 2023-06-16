@@ -2,11 +2,14 @@
 	export let size: string = 'scale-100';
 </script>
 
-<div
-	class={`${size} gap-2  sc border border-black/50 bg-surface-800/10 dark:bg-surface-200/10 w-fit rounded-3xl p-2 items-center flex-col flex justify-center`}
->
+<div class={`${size} gap-2 w-fit rounded-3xl p-2 items-center flex-col flex justify-center`}>
 	<!-- Shady -->
-	<svg width="101.22" height="31.987" viewBox="0 0 101.22 31.987" xmlns="http://www.w3.org/2000/svg"
+	<svg
+		width="101.22"
+		height="31.987"
+		viewBox="0 0 101.22 31.987"
+		class="-mb-3"
+		xmlns="http://www.w3.org/2000/svg"
 		><g
 			id="svgGroup"
 			stroke-linecap="round"

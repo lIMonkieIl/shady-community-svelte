@@ -1,13 +1,13 @@
 <script lang="ts">
+	import AppBarLogo from './AppBarLogo.svelte';
 	import BigLogo from '$lib/components/BigLogo.svelte';
-	import { page } from '$app/stores';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import {
 		AppBar,
-		modalStore,
-		type ModalSettings,
 		popup,
-		LightSwitch
+		LightSwitch,
+		type DrawerSettings,
+		drawerStore
 	} from '@skeletonlabs/skeleton';
 	import { customThemes, skeletonThemes, storeTheme } from '$lib/stores/stores';
 	import { enhance } from '$app/forms';
@@ -21,11 +21,23 @@
 			}
 		};
 	};
+	// Drawer Handler
+	function drawerOpen(): void {
+		const s: DrawerSettings = { id: 'doc-sidenav' };
+		drawerStore.open(s);
+	}
 </script>
 
 <AppBar shadow="shadow-xl">
 	<svelte:fragment slot="lead">
-		<BigLogo size="scale-75 -m-10" />
+		<div class="flex items-center">
+			<!-- Hamburger Menu -->
+			<button on:click={drawerOpen} class="btn-icon btn-icon-sm lg:!hidden">
+				<i class="fa-solid fa-bars text-xl" />
+			</button>
+			<!-- Logo -->
+			<AppBarLogo />
+		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<!-- Theme -->

@@ -2,9 +2,7 @@
 	export let size: string = 'scale-100';
 </script>
 
-<div
-	class={`flex ${size} sc border border-black/50 bg-surface-800/10 dark:bg-surface-200/10 w-fit rounded-3xl p-1 items-baseline justify-center`}
->
+<div class={`flex ${size} w-fit items-baseline justify-center`}>
 	<!-- S -->
 	<svg width="36.58" height="86.461" viewBox="0 0 36.58 86.461" xmlns="http://www.w3.org/2000/svg"
 		><g

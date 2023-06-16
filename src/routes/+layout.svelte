@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Sidebar from './../lib/components/Sidebar.svelte';
 	// The ordering of these imports is critical to the app working properly
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 
@@ -38,7 +39,7 @@
 	const metaDefaults = {
 		title: 'Shady Community — Drug Dealer Simulator Calculator',
 		description: 'Shady community is a mix calculator for the steam game Drug Dealer Simulator.',
-		image: '/weed.jpg'
+		image: '/favicon.ico'
 	};
 	const meta = {
 		title: metaDefaults.title,
@@ -118,12 +119,12 @@
 
 	<!-- Sidebar (Left) -->
 	<svelte:fragment slot="sidebarLeft">
-		<div>sidebar</div>
+		<Sidebar />
 	</svelte:fragment>
 
 	<!-- Page Content -->
 	<slot />
 
 	<!-- Page Footer -->
-	<svelte:fragment slot="pageFooter"><div>Page Footer</div></svelte:fragment>
+	<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
 </AppShell>
