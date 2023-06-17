@@ -22,7 +22,12 @@
 >
 	<svelte:fragment slot="lead">
 		{#if $drawerStore.id === 'sidenav' && $drawerStore.open}
-			<AppRailAnchor href="/">
+			<AppRailAnchor
+				on:click={() => {
+					onClickAnchor();
+				}}
+				href="/"
+			>
 				<BigLogoStack size={'scale-50 -m-12'} />
 			</AppRailAnchor>
 		{/if}

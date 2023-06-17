@@ -126,7 +126,7 @@
 		<Sidebar class={'hidden lg:block'} />
 	</svelte:fragment>
 	<!-- Page Header -->
-	<svelte:fragment slot="pageHeader"><div class="min-h-[15px]" /></svelte:fragment>
+	<!-- <svelte:fragment slot="pageHeader"><div class="min-h-[15px]" /></svelte:fragment> -->
 	<!-- Page Content -->
 	<slot />
 
