@@ -47,6 +47,7 @@
 		"@auth/core": "^0.8.2",
 		"@auth/sveltekit": "^0.3.3",
 		"@neodrag/svelte": "^2.0.3",
+		"muuri": "^0.9.5",
 		"svelte-moveable": "^0.40.0"
 	}
 }
