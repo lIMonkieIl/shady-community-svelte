@@ -36,6 +36,7 @@
 						{#each themes as { icon, name, type }}
 							<li>
 								<button
+									id="tools-close"
 									class="option w-full h-full"
 									type="submit"
 									name="theme"

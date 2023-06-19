@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Accordion, AccordionItem, popup } from '@skeletonlabs/skeleton';
 	import type { PopupSettings } from '@skeletonlabs/skeleton';
-	import { widgets } from './widgets';
+	import { widgets } from './widgets/widgets';
 	import { storeWidgets } from '$lib/stores/storeWidgets';
 
 	const popupSettings: PopupSettings = {

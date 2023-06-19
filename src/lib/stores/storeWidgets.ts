@@ -1,4 +1,4 @@
-import type { Widget } from '$lib/components/widgets';
+import type { Widget } from '$lib/components/widgets/widgets';
 import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Writable } from 'svelte/store';
 
@@ -22,9 +22,7 @@ function createWidgetsStore() {
 			update((value) => {
 				const find = value.widgets.indexOf(widget);
 				const toKeep = value.widgets;
-				if (find) {
-					toKeep.splice(find, 1);
-				}
+				toKeep.splice(find, 1);
 				return { dragDisabled: value.dragDisabled, widgets: toKeep };
 			})
 	};

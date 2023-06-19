@@ -2,9 +2,9 @@
 	import { flip } from 'svelte/animate';
 	import WidgetButton from '$lib/components/WidgetButton.svelte';
 	import { storeWidgets } from '$lib/stores/storeWidgets';
-	import { widgets, type Widget } from '$lib/components/widgets';
+	import { widgets, type Widget } from '$lib/components/widgets/widgets';
 	import { dndzone, SOURCES, type Options, TRIGGERS } from 'svelte-dnd-action';
-	import WidgetContainer from '$lib/components/test/WidgetContainer.svelte';
+	import WidgetContainer from '$lib/components/widgets/WidgetContainer.svelte';
 	function retreiveWidgetContent(widget: Widget) {
 		const item = widgets.find((v) => v.id === widget.id);
 		return item?.content;
@@ -38,7 +38,7 @@
 <WidgetButton />
 <section
 	class={`m-2 flex flex-col gap-2 p-2 ${
-		!$storeWidgets.dragDisabled ? 'card variant-ghost-primary' : 'rounded-container-token'
+		!$storeWidgets.dragDisabled ? 'card variant-ghost-surface' : 'rounded-container-token'
 	} transition-all duration-300`}
 	use:dndzone={{
 		items,
@@ -49,10 +49,10 @@
 	on:consider={handleConsider}
 	on:finalize={handleFinalize}
 >
-	{#each items as item (item.id)}
+	{#each items as widget (widget.id)}
 		<div animate:flip={{ duration: flipDurationMs }}>
-			<WidgetContainer>
-				<svelte:component this={retreiveWidgetContent(item)} />
+			<WidgetContainer {widget}>
+				<svelte:component this={retreiveWidgetContent(widget)} />
 			</WidgetContainer>
 		</div>
 	{/each}

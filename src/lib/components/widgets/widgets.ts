@@ -1,7 +1,10 @@
-import Test1 from './test/test1.svelte';
-import Test2 from './test/test2.svelte';
-import Test3 from './test/test3.svelte';
-import Test4 from './test/test4.svelte';
+import Actions from './Actions.svelte';
+import AreaDemand from './AreaDemand.svelte';
+import CropPlanner from './CropPlanner.svelte';
+import MixStats from './MixStats.svelte';
+import MixTable from './MixTable.svelte';
+import Options from './Options.svelte';
+import ProfitsTable from './ProfitsTable.svelte';
 
 export interface Widget {
 	id: number;
@@ -19,7 +22,7 @@ export const widgets: Widget[] = [
 		icon: 'fa-gears',
 		about: 'This widget allows you to set to options. Its needed it most cases.',
 		image: '/Options.png',
-		content: Test1
+		content: Options
 	},
 	{
 		id: 2,
@@ -28,7 +31,7 @@ export const widgets: Widget[] = [
 		about:
 			'This widget is a place to display all ingredients in the mix. Its needed it most cases.',
 		image: '/MixTable.png',
-		content: Test2
+		content: MixTable
 	},
 	{
 		id: 3,
@@ -36,7 +39,7 @@ export const widgets: Widget[] = [
 		icon: 'fa-map-location',
 		about: 'This widget allows you to see the areas your mix could be sold.',
 		image: '/MixDemand.png',
-		content: Test3
+		content: AreaDemand
 	},
 	{
 		id: 4,
@@ -45,7 +48,7 @@ export const widgets: Widget[] = [
 		about:
 			'This widget allows you to see the potential profit from selling your mix to clients/gangs and the cost of making the mix.',
 		image: '/ProfitsTable.png',
-		content: Test4
+		content: ProfitsTable
 	},
 	{
 		id: 5,
@@ -53,7 +56,7 @@ export const widgets: Widget[] = [
 		icon: 'fa-chart-simple',
 		about: 'This widget allows you to see your mix stats like: Addiction, Str, MixStr, Tox.',
 		image: '/MixStats.png',
-		content: Test1
+		content: MixStats
 	},
 	{
 		id: 6,
@@ -61,7 +64,7 @@ export const widgets: Widget[] = [
 		icon: 'fa-hand-dots',
 		about: 'This widget allows you to do actions like Mix: Saving, Loading, Scaling, Sharing,',
 		image: '/Actions.png',
-		content: Test2
+		content: Actions
 	},
 	{
 		id: 7,
@@ -69,6 +72,6 @@ export const widgets: Widget[] = [
 		icon: 'fa-cannabis',
 		about: 'This widget allows you to plan your indoor/outdoor crops.',
 		image: '/Actions.png',
-		content: Test3
+		content: CropPlanner
 	}
 ];
