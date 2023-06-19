@@ -1,7 +1,22 @@
 {
 	"language": "en",
-	"ignorePaths": ["static/**", "pnpm-lock.yaml", "package-lock.json", "yarn.lock"],
-	"dictionaries": ["html", "typescript", "softwareTerms", "companies"],
+	"ignorePaths": [
+		"static/**",
+		"pnpm-lock.yaml",
+		"package-lock.json",
+		"yarn.lock"
+	],
+	"dictionaries": [
+		"html",
+		"typescript",
+		"softwareTerms",
+		"companies"
+	],
 	"allowCompoundWords": true,
-	"words": ["greenie", "hamlindigo", "monkie"]
+	"words": [
+		"greenie",
+		"hamlindigo",
+		"Huslaa",
+		"monkie"
+	]
 }

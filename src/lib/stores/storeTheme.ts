@@ -1,6 +1,6 @@
 import type { Writable } from 'svelte/store';
 import { localStorageStore } from '@skeletonlabs/skeleton';
-import type { CustomTheme, SkeletonThemes } from '$lib/types';
+import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 
 export const skeletonThemes = [
 	{ type: 'skeleton', name: 'skeleton', icon: '💀' },

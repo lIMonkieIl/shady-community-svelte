@@ -8,7 +8,7 @@
 	<div>
 		<!-- trigger -->
 		<button
-			class="btn group -my-4 hover:variant-soft-surface"
+			class="btn group hover:variant-soft-surface"
 			use:popup={{ event: 'click', target: 'userMenu' }}
 		>
 			<Avatar

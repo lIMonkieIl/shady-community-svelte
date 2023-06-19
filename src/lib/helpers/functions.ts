@@ -1,5 +1,5 @@
-import { skeletonThemes } from '$lib/stores/stores';
-import type { CustomTheme, SkeletonThemes } from '$lib/types';
+import { skeletonThemes } from '$lib/stores/storeTheme';
+import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 
 /**
  * A function to check if the selected custom theme exists
@@ -17,11 +17,11 @@ export function customThemeExists(themeModule: CustomTheme['type']): boolean {
 }
 
 /**
- * A function to check if the selected theme is a default theme
+ * A function to check if the selected theme is a skeleton theme
  * @param {SkeletonThemes} name - The name of the theme
  * @returns {boolean} True = default theme, False = custom theme
  */
-export function isDefaultTheme(name: SkeletonThemes['type']): boolean {
+export function isSkeletonTheme(name: SkeletonThemes['type']): boolean {
 	const found = skeletonThemes.find((theme) => theme.type === name);
 	return found ? true : false;
 }

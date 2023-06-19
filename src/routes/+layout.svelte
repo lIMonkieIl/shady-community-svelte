@@ -23,7 +23,7 @@
 	import type { LayoutServerData } from './$types';
 
 	// Stores
-	import { storeTheme } from '$lib/stores/stores';
+	import { storeTheme } from '$lib/stores/storeTheme';
 
 	// Components & Utilities
 	import { AppShell } from '@skeletonlabs/skeleton';

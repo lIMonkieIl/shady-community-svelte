@@ -1,17 +1,16 @@
 import type { LayoutServerLoad } from './$types';
 import { VERCEL_ENV } from '$env/static/private';
-import { customThemeExists, isDefaultTheme } from '$lib/helpers/functions';
-import type { CustomTheme, SkeletonThemes } from '$lib/types';
-
+import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
+import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 export const load: LayoutServerLoad = async (event) => {
 	// Get the cookie from the browser called "theme"
 	let theme = event.cookies.get('theme') ?? 'skeleton';
-	// Retrieve all default theme modules
-	const defaultThemeModules = import.meta.glob(
+	// Retrieve all skeleton theme modules
+	const skeletonThemeModules = import.meta.glob(
 		`/node_modules/@skeletonlabs/skeleton/dist/themes/*.css`,
 		{ as: 'raw' }
 	);
-	if (!isDefaultTheme(theme as SkeletonThemes['type'])) {
+	if (!isSkeletonTheme(theme as SkeletonThemes['type'])) {
 		// Retrieve all custom theme modules
 		const customThemeModules = import.meta.glob(`/src/lib/themes/*.css`, { as: 'raw' });
 		// Find the custom theme
@@ -29,24 +28,24 @@ export const load: LayoutServerLoad = async (event) => {
 		// No custom theme found, so resetting to default and returning
 		event.cookies.set('theme', 'skeleton', { path: '/' });
 		theme = 'skeleton';
-		// Find the default theme
-		const defaultThemeModule =
-			defaultThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
+		// Find the skeleton theme
+		const skeletonThemeModule =
+			skeletonThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
 
 		return {
 			session: await event.locals.getSession(),
-			currentTheme: defaultThemeModule(),
+			currentTheme: skeletonThemeModule(),
 			vercelEnv: VERCEL_ENV
 		};
 	}
 
-	// Find the default theme
-	const defaultThemeModule =
-		defaultThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
+	// Find the skeleton theme
+	const skeletonThemeModule =
+		skeletonThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
 
 	return {
 		session: await event.locals.getSession(),
-		currentTheme: defaultThemeModule(),
+		currentTheme: skeletonThemeModule(),
 		vercelEnv: VERCEL_ENV
 	};
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { popup, LightSwitch } from '@skeletonlabs/skeleton';
-	import { customThemes, skeletonThemes, storeTheme } from '$lib/stores/stores';
+	import { customThemes, skeletonThemes, storeTheme } from '$lib/stores/storeTheme';
 	import { enhance } from '$app/forms';
 	const themes = [...skeletonThemes, ...customThemes];
 	const setTheme: SubmitFunction = () => {

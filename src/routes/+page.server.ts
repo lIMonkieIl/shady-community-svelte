@@ -1,5 +1,5 @@
-import { customThemeExists, isDefaultTheme } from '$lib/helpers/functions';
-import type { CustomTheme, SkeletonThemes } from '$lib/types';
+import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
+import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
@@ -16,7 +16,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const theme = formData.get('theme')?.toString() ?? 'skeleton';
 		if (
-			isDefaultTheme(theme as SkeletonThemes['type']) ||
+			isSkeletonTheme(theme as SkeletonThemes['type']) ||
 			customThemeExists(theme as CustomTheme['type'])
 		) {
 			// Sets the selected theme to the cookie

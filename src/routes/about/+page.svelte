@@ -2,7 +2,7 @@
 	import BigLogoStack from '$lib/components/BigLogoStack.svelte';
 </script>
 
-<section class="flex px-2 justify-center w-full">
+<section class="flex p-4 justify-center w-full">
 	<div class="gap-4 flex-col flex">
 		<div
 			class="card variant-soft-surface items-center gap-5 flex flex-col text-center justify-center p-4"
