@@ -9,7 +9,7 @@
 		target: 'widgets-panel',
 		closeQuery: '#will-close'
 	};
-	$: inactiveWidgets = widgets.filter((w) => !$storeWidgets.some((s) => s.id === w.id));
+	$: inactiveWidgets = widgets.filter((w) => !$storeWidgets.widgets.some((s) => s.id === w.id));
 </script>
 
 <!-- popup trigger -->
@@ -54,7 +54,7 @@
 					</Accordion>
 					<div class="p-2 flex justify-center items-center">
 						<button
-							on:click={() => storeWidgets.update((value) => (value = [...value, widget]))}
+							on:click={() => storeWidgets.actions.addToWidgets(widget)}
 							id="will-close"
 							type="button"
 							class="btn w-full variant-ghost-secondary"
