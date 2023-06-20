@@ -24,15 +24,15 @@
 	}
 </script>
 
-<div class="flex">
+<div class="flex flex-col w-fit overflow-hidden">
 	<div
-		class="flex gap-2 items-center flex-col p-2 justify-around text-2xl card variant-ghost-secondary rounded-tr-none rounded-br-none"
+		class="flex gap-2 items-center p-1 justify-around text-base card variant-ghost-secondary rounded-b-none"
 	>
 		<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 		<div
 			tabindex={$storeWidgets.dragDisabled ? 0 : -1}
 			aria-label="drag-handle"
-			class="hover:scale-125 duration-200 transition-all"
+			class="hover:scale-125 text-base duration-200 transition-all"
 			style={$storeWidgets.dragDisabled ? 'cursor: grab' : 'cursor: grabbing'}
 			on:mousedown={startDrag}
 			on:touchstart={startDrag}
@@ -43,11 +43,9 @@
 		<button
 			on:click={() => storeWidgets.actions.removeFromWidgets(widget)}
 			class="hover:scale-125 duration-200 transition-all"
-			><i class="fa-solid text-xl fa-trash-alt" /></button
+			><i class="fa-solid text-base fa-trash-alt" /></button
 		>
 	</div>
 
-	<div class="card variant-ghost-surface flex p-1 overflow-hidden rounded-tl-none rounded-bl-none">
-		<slot><!-- optional fallback --></slot>
-	</div>
+	<slot><!-- optional fallback --></slot>
 </div>
