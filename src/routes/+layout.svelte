@@ -1,7 +1,4 @@
 <script lang="ts">
-	import ThemeChanger from './../lib/components/ThemeChanger.svelte';
-	import Drawer from './../lib/components/Drawer.svelte';
-	import Sidebar from './../lib/components/Sidebar.svelte';
 	// The ordering of these imports is critical to the app working properly
 	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
 
@@ -37,6 +34,9 @@
 		document.body.setAttribute('data-theme', $storeTheme);
 	}
 
+	import ThemeChanger from './../lib/components/ThemeChanger.svelte';
+	import Drawer from './../lib/components/Drawer.svelte';
+	import Sidebar from './../lib/components/Sidebar.svelte';
 	// SEO Meta tags
 	const metaDefaults = {
 		title: 'Shady Community — Drug Dealer Simulator Calculator',

@@ -52,9 +52,9 @@
 	<hr class="opacity-30" />
 	<div class="m-2 overflow-hidden rounded-container-token">
 		<!-- prettier-ignore -->
-		<AppRailAnchor href="/mixer" selected={$page.url.pathname === '/mixer'} on:click={() => { onClickAnchor() }}>
+		<AppRailAnchor href="/mixBoard" selected={$page.url.pathname === '/mixboard'} on:click={() => { onClickAnchor() }}>
 			<svelte:fragment slot="lead"><i class="fa-solid fa-blender text-2xl" /></svelte:fragment>
-			<span>Mixer</span>
+			<span>Mix Board</span>
 		</AppRailAnchor>
 	</div>
 </AppRail>

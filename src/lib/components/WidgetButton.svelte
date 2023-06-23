@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { Accordion, AccordionItem, popup } from '@skeletonlabs/skeleton';
-	import type { PopupSettings } from '@skeletonlabs/skeleton';
+	import gridHelp from './Grid/utils/helper';
+	import { storeWidget } from '$lib/stores/storeWidgets';
+	import { Accordion, AccordionItem, type PopupSettings, popup } from '@skeletonlabs/skeleton';
 	import { widgets } from './widgets/widgets';
-	import { storeWidgets } from '$lib/stores/storeWidgets';
+	import { flip } from 'svelte/animate';
+	import { fly } from 'svelte/transition';
+	import { adjust } from './Grid/utils/item';
 
 	const popupSettings: PopupSettings = {
 		event: 'click',
 		target: 'widgets-panel',
 		closeQuery: '#will-close'
 	};
-	$: inactiveWidgets = widgets.filter((w) => !$storeWidgets.widgets.some((s) => s.id === w.id));
+	$: inactiveWidgets = widgets.filter((w: any) => !$storeWidget.some((s: any) => s.id === w.id));
 </script>
 
 <!-- popup trigger -->
@@ -20,7 +23,10 @@
 		<i class="fa-solid fa-caret-down" />
 	</button>
 	<!-- popup -->
-	<div class="overflow-x-scroll lg:ml-20 p-4 h-4/5 w-72 card shadow-xl" data-popup="widgets-panel">
+	<div
+		class="lg:ml-20 z-50 overflow-x-scroll p-4 min-h-fit max-h-[80%] w-72 card shadow-xl"
+		data-popup="widgets-panel"
+	>
 		<Accordion class={'card mb-4 variant-ghost-secondary'}>
 			<AccordionItem>
 				<svelte:fragment slot="lead"><i class={`fa-solid fa-info-circle`} /></svelte:fragment>
@@ -34,37 +40,54 @@
 			</AccordionItem>
 			<!-- ... -->
 		</Accordion>
-		{#each inactiveWidgets as widget}
-			<div class="block overflow-hidden variant-ghost-primary card card-hover mb-4 cursor-pointer">
-				<section class="overflow-hidden w-full">
-					<img
-						src={widget.image}
-						class="h-20 rounded-container-token p-2 w-full object-cover"
-						alt=""
-					/>
-					<Accordion class={'!bg-transparent px-2'}>
-						<AccordionItem>
-							<svelte:fragment slot="lead"><i class={`fa-solid ${widget.icon}`} /></svelte:fragment>
-							<svelte:fragment slot="summary">{widget.name}</svelte:fragment>
-							<svelte:fragment slot="content">
-								<span>{widget.about}</span></svelte:fragment
+		{#if inactiveWidgets.length}
+			{#each inactiveWidgets as widget (widget.id)}
+				<div
+					animate:flip={{ delay: 200, duration: 400 }}
+					transition:fly|local={{ x: 100, duration: 400 }}
+					class="block overflow-hidden variant-ghost-primary card card-hover mb-4 cursor-pointer"
+				>
+					<section class="overflow-hidden w-full">
+						<img
+							src={widget.data.image}
+							class="h-20 rounded-container-token p-2 w-full object-cover"
+							alt=""
+						/>
+						<Accordion class={'!bg-transparent px-2'}>
+							<AccordionItem>
+								<svelte:fragment slot="lead"
+									><i class={`fa-solid ${widget.data.icon}`} /></svelte:fragment
+								>
+								<svelte:fragment slot="summary">{widget.data.name}</svelte:fragment>
+								<svelte:fragment slot="content">
+									<span>{widget.data.about}</span></svelte:fragment
+								>
+							</AccordionItem>
+							<!-- ... -->
+						</Accordion>
+						<div class="p-2 flex justify-center items-center">
+							<button
+								on:click|once={() => {
+									storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
+								}}
+								type="button"
+								class="btn w-full variant-ghost-secondary"
 							>
-						</AccordionItem>
-						<!-- ... -->
-					</Accordion>
-					<div class="p-2 flex justify-center items-center">
-						<button
-							on:click={() => storeWidgets.actions.addToWidgets(widget)}
-							id="will-close"
-							type="button"
-							class="btn w-full variant-ghost-secondary"
-						>
-							<i class="fa-solid fa-circle-plus" />
-							<span class="font-semibold">Add Widget</span>
-						</button>
-					</div>
-				</section>
+								<i class="fa-solid fa-circle-plus" />
+								<span class="font-semibold">Add Widget</span>
+							</button>
+						</div>
+					</section>
+				</div>
+			{/each}
+		{:else}
+			<div
+				class="flex gap-4 p-4 items-center justify-start overflow-hidden variant-ghost-warning card card-hover cursor-pointer"
+			>
+				<i class="fa-solid text-lg fa-triangle-exclamation" /><span
+					>All Widgets have been added.</span
+				>
 			</div>
-		{/each}
+		{/if}
 	</div>
 </div>

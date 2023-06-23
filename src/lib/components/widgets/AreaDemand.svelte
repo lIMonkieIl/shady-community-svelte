@@ -1,1 +1,1 @@
-<div class="card gap-2 flex flex-col rounded-t-none p-2">Area Demands</div>
+<div class="">Area Demands</div>
