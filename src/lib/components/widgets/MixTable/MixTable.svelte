@@ -12,6 +12,7 @@
 	} from '@skeletonlabs/skeleton';
 	import { fly, fade } from 'svelte/transition';
 	import type { Widget } from '../widgets';
+	import Card from '$lib/components/testing/Card.svelte';
 	let viewValue: number = 1;
 	let searchFilterValue: string = 'all';
 
@@ -106,9 +107,7 @@
 		{:else if viewValue === 1}
 			{#if items.length}
 				{#each items as ingredient (ingredient.id)}
-					<div animate:flip={{ duration: 500 }} class="card p-2 h-60 w-52 variant-ghost-surface">
-						<span>{ingredient.name}</span>
-					</div>
+					<Card />
 				{/each}
 			{:else}
 				<div

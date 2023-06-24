@@ -1,0 +1,90 @@
+[
+   {
+      "strain": "Ghetto Kush",
+      "grams": 205,
+      "hours": 78,
+      "wetAmount": 2.62,
+      "dryRate": 36,
+      "strainYield": 0.95,
+      "price": 45,
+      "inOrOut": "Indoor",
+      "waterH": 12.5
+   },
+   {
+      "strain": "Bong Breaker",
+      "grams": 305,
+      "hours": 93,
+      "wetAmount": 3.39,
+      "dryRate": 45,
+      "strainYield": 1.53,
+      "price": 40,
+      "inOrOut": "Indoor",
+      "waterH": 12.5
+   },
+   {
+      "strain": "Firecracker",
+      "grams": 312,
+      "hours": 100,
+      "wetAmount": 3.12,
+      "dryRate": 40,
+      "strainYield": 1.25,
+      "price": 40,
+      "inOrOut": "Indoor",
+      "waterH": 12.5
+   },
+   {
+      "strain": "Stoner Haze",
+      "grams": 322,
+      "hours": 108,
+      "wetAmount": 2.98,
+      "dryRate": 35,
+      "strainYield": 1.04,
+      "price": 45,
+      "inOrOut": "Indoor",
+      "waterH": 12.5
+   },
+   {
+      "strain": "AK-420",
+      "grams": 176,
+      "hours": 167,
+      "wetAmount": 1.05,
+      "dryRate": 52,
+      "strainYield": 0.55,
+      "price": 30,
+      "inOrOut": "Outdoor",
+      "waterH": 34
+   },
+   {
+      "strain": "Brainfuck",
+      "grams": 192,
+      "hours": 176,
+      "wetAmount": 1.09,
+      "dryRate": 47,
+      "strainYield": 0.53,
+      "price": 30,
+      "inOrOut": "Outdoor",
+      "waterH": 34
+   },
+   {
+      "strain": "Dubai Sativa",
+      "grams": 220,
+      "hours": 183,
+      "wetAmount": 1.2,
+      "dryRate": 50,
+      "strainYield": 0.6,
+      "price": 35,
+      "inOrOut": "Outdoor",
+      "waterH": 34
+   },
+   {
+      "strain": "Skyscrapper",
+      "grams": 250,
+      "hours": 185,
+      "wetAmount": 1.35,
+      "dryRate": 50,
+      "strainYield": 0.68,
+      "price": 35,
+      "inOrOut": "Outdoor",
+      "waterH": 34
+   }
+]

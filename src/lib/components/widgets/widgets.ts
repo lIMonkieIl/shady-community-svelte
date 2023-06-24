@@ -5,6 +5,7 @@ import MixTable from '$lib/components/widgets/MixTable/MixTable.svelte';
 import Options from '$lib/components/widgets/Options.svelte';
 import ProfitsTable from '$lib/components/widgets/ProfitsTable.svelte';
 import gridHelp from '../Grid/utils/helper';
+import CropPlanner from './CropPlanner.svelte';
 
 export interface Helper {
 	fixed: boolean;
@@ -53,6 +54,7 @@ export const widgets: Widget[] = [
 			y: 0,
 			w: 4,
 			h: 4,
+
 			customDragger: true,
 			customResizer: true
 		}),
@@ -74,8 +76,7 @@ export const widgets: Widget[] = [
 			w: 4,
 			h: 4,
 			customDragger: true,
-			customResizer: true,
-			min: { w: 4, h: 4 }
+			customResizer: true
 		}),
 		id: 2,
 		collapsed: { active: false, w: 0, h: 0 },
@@ -94,6 +95,7 @@ export const widgets: Widget[] = [
 			y: 0,
 			w: 4,
 			h: 4,
+
 			customDragger: true,
 			customResizer: true
 		}),
@@ -113,6 +115,7 @@ export const widgets: Widget[] = [
 			y: 0,
 			w: 4,
 			h: 4,
+
 			customDragger: true,
 			customResizer: true
 		}),
@@ -133,6 +136,7 @@ export const widgets: Widget[] = [
 			y: 0,
 			w: 4,
 			h: 4,
+
 			customDragger: true,
 			customResizer: true
 		}),
@@ -152,6 +156,7 @@ export const widgets: Widget[] = [
 			y: 0,
 			w: 4,
 			h: 4,
+
 			customDragger: true,
 			customResizer: true
 		}),
@@ -181,7 +186,7 @@ export const widgets: Widget[] = [
 			icon: 'fa-cannabis',
 			about: 'This widget allows you to plan your indoor/outdoor crops.',
 			image: '/Actions.png',
-			content: Actions
+			content: CropPlanner
 		}
 	}
 ];
