@@ -117,7 +117,7 @@
 		 * * Checking to see if site has been updated if so refresh page to get updated content
 		 */
 		if ($updated && !willUnload && to?.url) {
-			location.href = to.url.href + '/#updated';
+			location.href = to.url.href;
 		}
 	});
 </script>
