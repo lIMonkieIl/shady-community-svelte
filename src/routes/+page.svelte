@@ -3,3 +3,4 @@
 </script>
 
 <span>been updated = {$updated}</span>
+<span />
