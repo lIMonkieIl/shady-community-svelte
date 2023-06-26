@@ -10,3 +10,5 @@
 		toastStore.trigger(updatedToast);
 	}
 </script>
+
+<span>hello</span>
