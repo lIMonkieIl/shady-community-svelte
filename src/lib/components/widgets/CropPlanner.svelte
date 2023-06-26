@@ -14,6 +14,46 @@
 	let showSetUpCost: boolean;
 	let tabSet: number = 0;
 	let sellPrice: number = 10;
+	let show: 'crop' | 'plant' = 'plant';
+	function seedData(show: 'crop' | 'plant', cropAmount: number) {
+		if (show === 'crop') {
+			return {
+				wet: {
+					g: selectedSeed.grams * cropAmount,
+					hg: selectedSeed.wetAmount * cropAmount,
+					per: ''
+				},
+				dry: {
+					g: selectedSeed.strainYield * selectedSeed.hours * cropAmount,
+					hg: selectedSeed.strainYield * cropAmount,
+					per: selectedSeed.dryRate
+				},
+				loss: {
+					g: (selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours) * cropAmount,
+					hg: '',
+					per: 100 - selectedSeed.dryRate
+				}
+			};
+		} else {
+			return {
+				wet: {
+					g: selectedSeed.grams,
+					hg: selectedSeed.wetAmount,
+					per: ''
+				},
+				dry: {
+					g: selectedSeed.strainYield * selectedSeed.hours,
+					hg: selectedSeed.strainYield,
+					per: selectedSeed.dryRate
+				},
+				loss: {
+					g: selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours,
+					hg: '',
+					per: 100 - selectedSeed.dryRate
+				}
+			};
+		}
+	}
 </script>
 
 <TabGroup class={'w-full h-full overflow-scroll'} justify="justify-center">
@@ -109,66 +149,43 @@
 		{:else if tabSet === 1}
 			<div class="flex truncate flex-wrap gap-2 justify-center">
 				<!-- Native Table Element -->
-				<table class="table table-hover max-w-[15rem] table-compact">
-					<thead>
-						<tr>
-							<th>Plant</th>
-							<th>G</th>
-							<th>G/H</th>
-							<th>%</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Wet</td>
-							<td>205</td>
-							<td>2.62</td>
-							<td />
-						</tr>
-						<tr>
-							<td>Dry</td>
-							<td>74.10</td>
-							<td>0.95</td>
-							<td>36.00%</td>
-						</tr>
-						<tr>
-							<td>Loss</td>
-							<td>130.90</td>
-							<td />
-							<td>64.00%</td>
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-hover max-w-[15rem] table-compact">
-					<thead>
-						<tr>
-							<th>Crop</th>
-							<th>G</th>
-							<th>G/H</th>
-							<th>%</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Wet</td>
-							<td>1640</td>
-							<td>20.96</td>
-							<td />
-						</tr>
-						<tr>
-							<td>Dry</td>
-							<td>593</td>
-							<td>7.60</td>
-							<td>36.00%</td>
-						</tr>
-						<tr>
-							<td>Loss</td>
-							<td>1047.2</td>
-							<td />
-							<td>64.00%</td>
-						</tr>
-					</tbody>
-				</table>
+				{#key show}
+					<table class="table table-hover w-fit table-compact">
+						<thead>
+							<tr>
+								<th>
+									<select placeholder={'select'} bind:value={show} class="select w-fit">
+										<option value={'plant'}>Plant</option>
+										<option value={'crop'}>Crop</option>
+									</select></th
+								>
+								<th>G</th>
+								<th>G/H</th>
+								<th>%</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Wet</td>
+								<td>{seedData(show, cropAmount).wet.g}</td>
+								<td>{seedData(show, cropAmount).wet.hg.toFixed(2)}</td>
+								<td>{seedData(show, cropAmount).wet.per}</td>
+							</tr>
+							<tr>
+								<td>Dry</td>
+								<td>{seedData(show, cropAmount).dry.g.toFixed(2)}</td>
+								<td>{seedData(show, cropAmount).dry.hg.toFixed(2)}</td>
+								<td>{seedData(show, cropAmount).dry.per.toFixed(2)}%</td>
+							</tr>
+							<tr>
+								<td>Loss</td>
+								<td>{seedData(show, cropAmount).loss.g.toFixed(2)}</td>
+								<td>{seedData(show, cropAmount).loss.hg}</td>
+								<td>{seedData(show, cropAmount).loss.per.toFixed(2)}%</td>
+							</tr>
+						</tbody>
+					</table>
+				{/key}
 			</div>
 		{:else if tabSet === 2}
 			<div class="flex truncate flex-wrap gap-2 justify-center">
