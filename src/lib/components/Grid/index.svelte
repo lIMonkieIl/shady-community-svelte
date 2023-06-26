@@ -14,7 +14,6 @@
 	import type { Widget } from '../widgets/widgets.js';
 
 	const dispatch = createEventDispatcher();
-
 	export let fillSpace = false;
 	export let items: Widget[];
 	export let rowHeight;
@@ -163,9 +162,11 @@
 				nativeContainer={container}
 				let:resizePointerDown
 				let:movePointerDown
+				let:size
 			>
 				{#if item[getComputedCols]}
 					<slot
+						{size}
 						{movePointerDown}
 						{resizePointerDown}
 						dataItem={item}

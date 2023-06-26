@@ -36,7 +36,6 @@
 	let active = false;
 
 	let initX: any, initY: any;
-
 	let capturePos = {
 		x: 0,
 		y: 0
@@ -112,7 +111,6 @@
 	}) => {
 		initX = clientX;
 		initY = clientY;
-
 		capturePos = { x: left, y: top };
 		shadow = { x: item[16].x, y: item[16].y, w: item[16].w, h: item[16].h };
 		newSize = { width, height };
@@ -266,12 +264,16 @@
 		window.removeEventListener('pointermove', resizePointerMove);
 		window.removeEventListener('pointerup', resizePointerUp);
 	};
+	let clientHeight: number;
+	let clientWidth: number;
 </script>
 
 <div
 	draggable={false}
 	on:pointerdown={item && item[16].customDragger ? null : draggable && pointerdown}
 	class="svlt-grid-item"
+	bind:clientHeight
+	bind:clientWidth
 	class:svlt-grid-active={active || (trans && rect)}
 	style="width: {active ? newSize.width : width}px; height:{active ? newSize.height : height}px; 
   {active
@@ -280,7 +282,11 @@
 		? `transform: translate(${cordDiff.x}px, ${cordDiff.y}px); position:absolute; transition: width 0.2s, height 0.2s;`
 		: `transition: transform 0.2s, opacity 0.2s; transform: translate(${left}px, ${top}px); `} "
 >
-	<slot movePointerDown={pointerdown} {resizePointerDown} />
+	<slot
+		size={{ w: clientWidth, h: clientHeight }}
+		movePointerDown={pointerdown}
+		{resizePointerDown}
+	/>
 	{#if resizable && !item[16].customResizer}
 		<div class="svlt-grid-resizer" on:pointerdown={resizePointerDown} />
 	{/if}

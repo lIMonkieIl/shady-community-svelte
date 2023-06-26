@@ -66,6 +66,7 @@
 	{/if}
 	{#key fillSpace}
 		<Grid
+			let:size
 			on:change={(e) => {
 				storeWidget.set(items);
 			}}
@@ -86,15 +87,17 @@
 					dataItem.collapsed.active ? 'h-8' : 'h-full'
 				} card variant-ghost-secondary flex-col w-full  overflow-hidden`}
 			>
-				<div class={`flex px-2 gap-4 items-center p-1 justify-between  text-base rounded-b-none`}>
+				<div class={`flex px-3 gap-4 items-center p-1 justify-between  text-base rounded-b-none`}>
 					<button
 						on:click={(e) => {
 							e.preventDefault();
 							storeWidget.actions.collapsWidgetToggle(dataItem);
 						}}
-						class="group flex items-center justify-center gap-3"
+						class={`group flex  items-center justify-center gap-3 ${size.w <= 150 && 'hidden'}`}
 					>
-						<span class="h6 truncate font-semibold">{dataItem.data.name}</span>
+						<span class={` ${size.w <= 250 && 'hidden'} h6 truncate font-semibold`}
+							>{dataItem.data.name}</span
+						>
 						<i
 							class={`fa-solid group-hover:scale-125 duration-200 transition-all ${
 								dataItem.collapsed.active ? 'fa-angle-up' : 'fa-angle-down'
@@ -114,7 +117,7 @@
 					>
 						<i class="fa-solid text-base fa-grip" />
 					</div>
-					<div class="flex justify-center items-center gap-4">
+					<div class={`flex justify-center items-center gap-4 ${size.w <= 150 && 'hidden'}`}>
 						<button
 							on:click|once={() => storeWidget.actions.removeFromWidgets(dataItem)}
 							class={`hover:scale-125 duration-200 transition-all ${
@@ -133,7 +136,9 @@
 					</div>
 				</div>
 				{#if !dataItem.collapsed.active}
-					<div class={`card h-full w-full flex p-2 overflow-hidden rounded-t-none rounded-b-none`}>
+					<div
+						class={`card h-full justify-center items-center w-full flex p-2 overflow-scroll rounded-t-none rounded-b-none`}
+					>
 						<svelte:component this={retreiveWidgetContent(dataItem)} />
 					</div>
 				{/if}
