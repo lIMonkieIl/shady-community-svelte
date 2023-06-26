@@ -9,7 +9,7 @@
 	import '../app.postcss';
 
 	// Dependency: Floating UI
-	import { storePopup } from '@skeletonlabs/skeleton';
+	import { Toast, storePopup } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
@@ -113,7 +113,7 @@
 </svelte:head>
 
 <Drawer />
-
+<Toast position={'tr'} class={'pt-16'} background={'card'} />
 <AppShell>
 	<!-- Header -->
 	<svelte:fragment slot="header">
