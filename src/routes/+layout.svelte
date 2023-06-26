@@ -9,7 +9,7 @@
 	import '../app.postcss';
 
 	// Dependency: Floating UI
-	import { Toast, storePopup } from '@skeletonlabs/skeleton';
+	import { Toast, storePopup, type ToastSettings, toastStore } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
 	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
@@ -73,6 +73,21 @@
 	// Reactive
 	// Current Theme Data
 	$: ({ currentTheme } = data);
+	import { beforeNavigate } from '$app/navigation';
+	import { updated } from '$app/stores';
+
+	const updatedToast: ToastSettings = {
+		message: 'A new update was deployed.',
+		autohide: false,
+		background: 'variant-filled-success'
+	};
+
+	beforeNavigate(({ willUnload, to }) => {
+		if ($updated && !willUnload && to?.url) {
+			location.href = to.url.href;
+			toastStore.trigger(updatedToast);
+		}
+	});
 </script>
 
 <!-- App Shell -->
