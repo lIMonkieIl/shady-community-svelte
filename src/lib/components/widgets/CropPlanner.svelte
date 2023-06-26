@@ -17,7 +17,7 @@
 	</label>
 
 	<label class="label">
-		<span>Crop gSize</span>
+		<span>Crop Size</span>
 		<input min="1" bind:value={cropAmount} class="input" title="seed_amount" type="number" />
 	</label>
 	<label class="label">
