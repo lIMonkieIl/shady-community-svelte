@@ -136,9 +136,7 @@
 					</div>
 				</div>
 				{#if !dataItem.collapsed.active}
-					<div
-						class={`card h-full justify-center items-center w-full flex p-2 overflow-scroll rounded-t-none rounded-b-none`}
-					>
+					<div class={`card h-full w-full p-2 overflow-hidden rounded-t-none rounded-b-none`}>
 						<svelte:component this={retreiveWidgetContent(dataItem)} />
 					</div>
 				{/if}
