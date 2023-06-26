@@ -3,3 +3,4 @@
 </script>
 
 <span>{JSON.stringify(updated)}</span>
+<span>hello</span>
