@@ -2,5 +2,4 @@
 	import { updated } from '$app/stores';
 </script>
 
-<span>{JSON.stringify(updated)}</span>
-<span>hello</span>
+<span>been updated = {$updated}</span>
