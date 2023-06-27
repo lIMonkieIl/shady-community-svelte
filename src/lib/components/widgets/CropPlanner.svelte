@@ -12,51 +12,60 @@
 	}
 	let cropAmount = 5;
 	let showSetUpCost: boolean;
-	let tabSet: number = 2;
+	let tabSet: number = 1;
 	let sellPrice: number = 10;
-	let show: 'crop' | 'plant' = 'plant';
+	let show: 'crop' | 'plant' = 'crop';
 	function seedData(show: 'crop' | 'plant', cropAmount: number) {
 		if (show === 'crop') {
 			return {
 				wet: {
-					g: selectedSeed.grams * cropAmount,
-					hg: selectedSeed.wetAmount * cropAmount,
+					g: `${(selectedSeed.grams * cropAmount).toFixed(1)} g`,
+					hg: `${(selectedSeed.wetAmount * cropAmount).toFixed(1)} g`,
 					per: ''
 				},
 				dry: {
-					g: selectedSeed.strainYield * selectedSeed.hours * cropAmount,
-					hg: selectedSeed.strainYield * cropAmount,
-					per: selectedSeed.dryRate
+					g: `${(selectedSeed.strainYield * selectedSeed.hours * cropAmount).toFixed(1)} g`,
+					hg: `${(selectedSeed.strainYield * cropAmount).toFixed(1)} g`,
+					per: `${selectedSeed.dryRate.toFixed(1)} %`
 				},
 				loss: {
-					g: (selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours) * cropAmount,
-					hg: '',
-					per: 100 - selectedSeed.dryRate
+					g: `${(
+						(selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours) *
+						cropAmount
+					).toFixed(1)} g`,
+					hg: `${(
+						((selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours) * cropAmount) /
+						selectedSeed.hours
+					).toFixed(1)} g`,
+					per: `${(100 - selectedSeed.dryRate).toFixed(1)} %`
 				}
 			};
 		} else {
 			return {
 				wet: {
-					g: selectedSeed.grams,
-					hg: selectedSeed.wetAmount,
+					g: `${selectedSeed.grams.toFixed(1)} g`,
+					hg: `${selectedSeed.wetAmount.toFixed(1)} g`,
 					per: ''
 				},
 				dry: {
-					g: selectedSeed.strainYield * selectedSeed.hours,
-					hg: selectedSeed.strainYield,
-					per: selectedSeed.dryRate
+					g: `${(selectedSeed.strainYield * selectedSeed.hours).toFixed(1)} g`,
+					hg: `${selectedSeed.strainYield.toFixed(1)} g`,
+					per: `${selectedSeed.dryRate.toFixed(1)} %`
 				},
 				loss: {
-					g: selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours,
-					hg: '',
-					per: 100 - selectedSeed.dryRate
+					g: `${(selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours).toFixed(1)} g`,
+					hg: `${(
+						(selectedSeed.grams - selectedSeed.strainYield * selectedSeed.hours) /
+						selectedSeed.hours
+					).toFixed(1)} g`,
+					per: `${(100 - selectedSeed.dryRate).toFixed(1)} %`
 				}
 			};
 		}
 	}
 	let includeSetupCosts: boolean = false;
 	let sellOption: 'gang' | 'client' = 'client';
-	function sellData(sellOption: 'gang' | 'client') {
+	function sellData(sellOption: 'gang' | 'client', sellPrice: number) {
 		if (sellOption === 'client') {
 			return {
 				cost: {
@@ -212,29 +221,10 @@
 				</label>
 			</div>
 		{:else if tabSet === 1}
-			<!--TODO | Add calculations for setup costs included and un-comment the component so it can be used-->
 			<div class="flex truncate flex-wrap gap-2 justify-center">
 				<!-- Native Table Element -->
 				{#key show}
 					<div class="flex gap-4 flex-col">
-						<!-- <div class="flex items-center justify-center gap-4">
-							<span class="first-letter:capitalize font-semibold">include setup costs ? </span>
-							<RadioGroup>
-								<RadioItem
-									class={'capitalize'}
-									bind:group={includeSetupCosts}
-									name="justify"
-									value={false}>no</RadioItem
-								>
-								<RadioItem
-									class={'capitalize'}
-									bind:group={includeSetupCosts}
-									name="justify"
-									value={true}>yes</RadioItem
-								>
-							</RadioGroup>
-						</div> -->
-
 						<table class="table table-hover w-fit table-compact">
 							<thead>
 								<tr>
@@ -245,7 +235,7 @@
 										</select></th
 									>
 									<th>G</th>
-									<th>G/H</th>
+									<th>G Per Hr</th>
 									<th>%</th>
 								</tr>
 							</thead>
@@ -253,20 +243,20 @@
 								<tr>
 									<td>Wet</td>
 									<td>{seedData(show, cropAmount).wet.g}</td>
-									<td>{seedData(show, cropAmount).wet.hg.toFixed(2)}</td>
+									<td>{seedData(show, cropAmount).wet.hg}</td>
 									<td>{seedData(show, cropAmount).wet.per}</td>
 								</tr>
 								<tr>
 									<td>Dry</td>
-									<td>{seedData(show, cropAmount).dry.g.toFixed(2)}</td>
-									<td>{seedData(show, cropAmount).dry.hg.toFixed(2)}</td>
-									<td>{seedData(show, cropAmount).dry.per.toFixed(2)}%</td>
+									<td>{seedData(show, cropAmount).dry.g}</td>
+									<td>{seedData(show, cropAmount).dry.hg}</td>
+									<td>{seedData(show, cropAmount).dry.per}</td>
 								</tr>
 								<tr>
 									<td>Loss</td>
-									<td>{seedData(show, cropAmount).loss.g.toFixed(2)}</td>
+									<td>{seedData(show, cropAmount).loss.g}</td>
 									<td>{seedData(show, cropAmount).loss.hg}</td>
-									<td>{seedData(show, cropAmount).loss.per.toFixed(2)}%</td>
+									<td>{seedData(show, cropAmount).loss.per}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -274,39 +264,76 @@
 				{/key}
 			</div>
 		{:else if tabSet === 2}
-			<div class="flex truncate flex-wrap gap-2 justify-center">
-				<!-- Native Table Element -->
-				<table class="table table-hover w-fit table-compact">
-					<thead>
-						<tr>
-							<th>
-								<select placeholder={'select'} bind:value={sellOption} class="select capitalize">
-									<option class="capitalize" value={'gang'}>gang</option>
-									<option value={'client'} class="capitalize">client</option>
-								</select></th
-							>
-							<th>per g</th>
-							<th>total</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>cost</td>
-							<td>{sellData(sellOption).cost.pg}</td>
-							<td>{sellData(sellOption).cost.total}</td>
-						</tr>
-						<tr>
-							<td>sell</td>
-							<td>{sellData(sellOption).sell.pg}</td>
-							<td>{sellData(sellOption).sell.total}</td>
-						</tr>
-						<tr>
-							<td>profit</td>
-							<td>{sellData(sellOption).profit.pg}</td>
-							<td>{sellData(sellOption).profit.total}</td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="flex w-full items-center justify-center">
+				<div class="flex w-fit gap-4 flex-col">
+					<div class="flex flex-col w-full gap-2">
+						{#if showSetUpCost}
+							<div class="flex items-center gap-2 justify-between">
+								<span class="first-letter:capitalize font-semibold">include setup costs ? </span>
+								<RadioGroup>
+									<RadioItem
+										class={'capitalize'}
+										bind:group={includeSetupCosts}
+										name="justify"
+										value={false}>no</RadioItem
+									>
+									<RadioItem
+										class={'capitalize'}
+										bind:group={includeSetupCosts}
+										name="justify"
+										value={true}>yes</RadioItem
+									>
+								</RadioGroup>
+							</div>
+						{/if}
+
+						<label class="label flex gap-2 items-center justify-between">
+							<span class="font-semibold">sell price ?</span>
+							<div class="input flex px-3 py-2 items-center w-32 justify-center">
+								<span>$</span>
+								<input
+									class="input bg-transparent hover:bg-transparent p-0 m-0 border-none"
+									min="1"
+									bind:value={sellPrice}
+									title="sell_price"
+									type="number"
+								/>
+							</div>
+						</label>
+					</div>
+					<!-- Native Table Element -->
+					<table class="table table-hover w-full table-compact">
+						<thead>
+							<tr>
+								<th>
+									<select placeholder={'select'} bind:value={sellOption} class="select capitalize">
+										<option class="capitalize" value={'gang'}>gang</option>
+										<option value={'client'} class="capitalize">client</option>
+									</select></th
+								>
+								<th>per g</th>
+								<th>total</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>cost</td>
+								<td>{sellData(sellOption, sellPrice).cost.pg}</td>
+								<td>{sellData(sellOption, sellPrice).cost.total}</td>
+							</tr>
+							<tr>
+								<td>sell</td>
+								<td>{sellData(sellOption, sellPrice).sell.pg}</td>
+								<td>{sellData(sellOption, sellPrice).sell.total}</td>
+							</tr>
+							<tr>
+								<td>profit</td>
+								<td>{sellData(sellOption, sellPrice).profit.pg}</td>
+								<td>{sellData(sellOption, sellPrice).profit.total}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		{:else if tabSet === 3}
 			<div class="flex truncate flex-wrap gap-2 justify-center">
