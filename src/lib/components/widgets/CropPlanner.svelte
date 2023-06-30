@@ -12,7 +12,7 @@
 	}
 	let cropAmount = 5;
 	let showSetUpCost: boolean;
-	let tabSet: number = 1;
+	let tabSet: number = 2;
 	let sellPrice: number = 10;
 	let show: 'crop' | 'plant' = 'crop';
 	function seedData(show: 'crop' | 'plant', cropAmount: number) {
@@ -65,79 +65,168 @@
 	}
 	let includeSetupCosts: boolean = false;
 	let sellOption: 'gang' | 'client' = 'client';
-	function sellData(sellOption: 'gang' | 'client', sellPrice: number) {
+	function sellData(sellOption: 'gang' | 'client', sellPrice: number, includeSetupCosts: boolean) {
 		if (sellOption === 'client') {
 			return {
 				cost: {
-					pg: (
+					pg: `$ ${(
 						(selectedSeed.price * cropAmount) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2),
-					total: selectedSeed.price * cropAmount
+					).toFixed(2)}`,
+					total: `$ ${(
+						selectedSeed.price * cropAmount +
+						(includeSetupCosts ? equipmentData(cropAmount).data.setUpCost : 0)
+					).toFixed(2)}`
 				},
 				sell: {
-					pg: sellPrice.toFixed(2),
-					total: (sellPrice * (selectedSeed.strainYield * selectedSeed.hours * cropAmount)).toFixed(
-						2
-					)
+					pg: `$ ${sellPrice.toFixed(2)}`,
+					total: `$ ${(
+						sellPrice *
+						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
+					).toFixed(2)}`
 				},
 				profit: {
-					pg: (
+					pg: `$ ${(
 						((sellPrice -
 							(selectedSeed.price * cropAmount) /
 								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 							(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2),
-					total: (
+					).toFixed(2)}`,
+					total: `$ ${(
 						(sellPrice -
 							(selectedSeed.price * cropAmount) /
 								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2)
+					).toFixed(2)}`
 				}
 			};
 		} else {
 			return {
 				cost: {
-					pg: (
+					pg: `$ ${(
 						(selectedSeed.price * cropAmount) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2),
-					total: selectedSeed.price * cropAmount
+					).toFixed(2)}`,
+					total: `$ ${(selectedSeed.price * cropAmount).toFixed(2)}`
 				},
 				sell: {
-					pg: (4).toFixed(2),
-					total: (4 * (selectedSeed.strainYield * selectedSeed.hours * cropAmount)).toFixed(2)
+					pg: `$ ${(4).toFixed(2)}`,
+					total: `$ ${(4 * (selectedSeed.strainYield * selectedSeed.hours * cropAmount)).toFixed(
+						2
+					)}`
 				},
 				profit: {
-					pg: (
+					pg: `$ ${(
 						((4 -
 							(selectedSeed.price * cropAmount) /
 								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 							(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2),
-					total: (
+					).toFixed(2)}`,
+					total: `$ ${(
 						(4 -
 							(selectedSeed.price * cropAmount) /
 								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2)
+					).toFixed(2)}`
 				}
 			};
 		}
 	}
+
+	function equipmentData(cropAmount: number) {
+		const filters = Math.ceil(cropAmount / 3.5);
+		const lights = Math.ceil(cropAmount / 8);
+		const dryers = Math.ceil(cropAmount / 1000);
+		const costs = {
+			filter: 300,
+			light: 150,
+			pot: 40,
+			dryer: 450
+		};
+		const equipment = {
+			text: {
+				filters: {
+					num: filters,
+					each: `$ ${costs.filter.toFixed(2)}`,
+					total: `$ ${(filters * costs.filter).toFixed(2)}`
+				},
+				lights: {
+					num: lights,
+					each: `$ ${costs.light.toFixed(2)}`,
+					total: `$ ${(lights * costs.light).toFixed(2)}`
+				},
+				pots: {
+					num: cropAmount,
+					each: `$ ${costs.pot.toFixed(2)}`,
+					total: `$ ${(cropAmount * costs.pot).toFixed(2)}`
+				},
+				dryers: {
+					num: dryers,
+					each: `$ ${costs.dryer.toFixed(2)}`,
+					total: `$ ${(dryers * costs.dryer).toFixed(2)}`
+				}
+			},
+			data: {
+				filters: {
+					num: filters,
+					each: costs.filter,
+					total: filters * costs.filter
+				},
+				lights: {
+					num: lights,
+					each: costs.light,
+					total: lights * costs.light
+				},
+				pots: {
+					num: cropAmount,
+					each: costs.pot,
+					total: cropAmount * costs.pot
+				},
+				dryers: {
+					num: dryers,
+					each: costs.dryer,
+					total: dryers * costs.dryer
+				}
+			}
+		};
+		return {
+			text: {
+				...equipment.text,
+				setUpCost: `$ ${(
+					equipment.data.dryers.total +
+					equipment.data.filters.total +
+					equipment.data.lights.total +
+					equipment.data.pots.total
+				).toFixed(2)}`,
+				totalCropCost: `$ ${(cropAmount * selectedSeed.price).toFixed(2)}`
+			},
+			data: {
+				...equipment.data,
+				setUpCost:
+					equipment.data.dryers.total +
+					equipment.data.filters.total +
+					equipment.data.lights.total +
+					equipment.data.pots.total,
+				totalCropCost: cropAmount * selectedSeed.price
+			}
+		};
+	}
 </script>
 
-<TabGroup class={'w-full h-full overflow-scroll'} justify="justify-center">
+<TabGroup
+	class={'w-full h-full overflow-scroll'}
+	active={'border-b-2 border-secondary-900-50-token'}
+	justify="justify-center"
+>
 	<Tab bind:group={tabSet} name="tab0" value={0}>
 		<span>Crop</span>
 	</Tab>
 	<Tab bind:group={tabSet} name="tab1" value={1}>
 		<span>Yield</span>
 	</Tab>
-	<Tab bind:group={tabSet} name="tab2" value={2}>Sell</Tab>
+	<Tab bind:group={tabSet} name="tab2" value={2}>Profit</Tab>
 	{#if showSetUpCost}
 		<Tab bind:group={tabSet} name="tab3" value={3}>Set Up</Tab>
 	{/if}
@@ -148,7 +237,11 @@
 			<div class=" flex flex-wrap gap-2 overflow-scroll h-full w-full justify-center">
 				<label class="label w-32">
 					<span>Strain</span>
-					<select placeholder={'select'} bind:value={selectedSeed} class="select">
+					<select
+						placeholder={'select'}
+						bind:value={selectedSeed}
+						class="select variant-ghost-primary"
+					>
 						{#each WeedGrowing as seed}
 							<option value={seed}>{seed.strain}</option>
 						{/each}
@@ -157,14 +250,20 @@
 
 				<label class="label w-32">
 					<span>Crop Size</span>
-					<input min="1" bind:value={cropAmount} class="input" title="seed_amount" type="number" />
+					<input
+						min="1"
+						bind:value={cropAmount}
+						class="input variant-ghost-primary"
+						title="seed_amount"
+						type="number"
+					/>
 				</label>
 				<label class="label w-32">
 					<span>Seed Price</span>
 					<input
 						value={`$${selectedSeed.price}`}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -174,7 +273,7 @@
 					<input
 						value={`$${selectedSeed.price * cropAmount}`}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -184,7 +283,7 @@
 					<input
 						value={selectedSeed.inOrOut}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -194,7 +293,7 @@
 					<input
 						value={selectedSeed.hours + ' Hrs'}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -204,7 +303,7 @@
 					<input
 						value={selectedSeed.waterH + ' Hrs'}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -214,7 +313,7 @@
 					<input
 						value={(selectedSeed.hours / selectedSeed.waterH).toFixed(1) + ' Times'}
 						readonly
-						class="input"
+						class="input variant-ghost-secondary"
 						title="seed_cost"
 						type="text"
 					/>
@@ -225,11 +324,15 @@
 				<!-- Native Table Element -->
 				{#key show}
 					<div class="flex gap-4 flex-col">
-						<table class="table table-hover w-fit table-compact">
-							<thead>
+						<table class="table table-hover variant-ghost-surface w-96 table-compact">
+							<thead class="">
 								<tr>
 									<th>
-										<select placeholder={'select'} bind:value={show} class="select w-fit">
+										<select
+											placeholder={'select'}
+											bind:value={show}
+											class="select -m-2 variant-ghost-primary w-fit"
+										>
 											<option value={'plant'}>Plant</option>
 											<option value={'crop'}>Crop</option>
 										</select></th
@@ -265,12 +368,16 @@
 			</div>
 		{:else if tabSet === 2}
 			<div class="flex w-full items-center justify-center">
-				<div class="flex w-fit gap-4 flex-col">
-					<div class="flex flex-col w-full gap-2">
+				<div class="flex w-fit gap-4 items-center flex-col">
+					<div class="flex flex-col w-fit gap-2">
 						{#if showSetUpCost}
 							<div class="flex items-center gap-2 justify-between">
 								<span class="first-letter:capitalize font-semibold">include setup costs ? </span>
-								<RadioGroup>
+								<RadioGroup
+									active={'variant-ghost-primary'}
+									color={'selection:bg-secondary-400-500-token'}
+									hover={'hover:variant-soft-primary selection:bg-secondary-400-500-token'}
+								>
 									<RadioItem
 										class={'capitalize'}
 										bind:group={includeSetupCosts}
@@ -287,12 +394,14 @@
 							</div>
 						{/if}
 
-						<label class="label flex gap-2 items-center justify-between">
-							<span class="font-semibold">sell price ?</span>
-							<div class="input flex px-3 py-2 items-center w-32 justify-center">
-								<span>$</span>
+						<label class="label flex gap-4 items-center justify-between">
+							<span class="font-semibold capitalize">sell price ?</span>
+							<div
+								class="input variant-ghost-primary flex px-3 py-2 items-center w-32 justify-center"
+							>
+								<span class="selection:bg-secondary-400-500-token">$</span>
 								<input
-									class="input bg-transparent hover:bg-transparent p-0 m-0 border-none"
+									class="border-transparent focus:border-transparent selection:bg-secondary-400-500-token bg-transparent w-full focus:ring-0 p-0 m-0"
 									min="1"
 									bind:value={sellPrice}
 									title="sell_price"
@@ -302,11 +411,15 @@
 						</label>
 					</div>
 					<!-- Native Table Element -->
-					<table class="table table-hover w-full table-compact">
+					<table class="table table-hover w-96 variant-ghost table-compact">
 						<thead>
 							<tr>
 								<th>
-									<select placeholder={'select'} bind:value={sellOption} class="select capitalize">
+									<select
+										placeholder={'select'}
+										bind:value={sellOption}
+										class="select -m-2 variant-ghost-primary capitalize"
+									>
 										<option class="capitalize" value={'gang'}>gang</option>
 										<option value={'client'} class="capitalize">client</option>
 									</select></th
@@ -315,21 +428,21 @@
 								<th>total</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="capitalize">
 							<tr>
 								<td>cost</td>
-								<td>{sellData(sellOption, sellPrice).cost.pg}</td>
-								<td>{sellData(sellOption, sellPrice).cost.total}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).cost.pg}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).cost.total}</td>
 							</tr>
 							<tr>
 								<td>sell</td>
-								<td>{sellData(sellOption, sellPrice).sell.pg}</td>
-								<td>{sellData(sellOption, sellPrice).sell.total}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).sell.pg}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).sell.total}</td>
 							</tr>
 							<tr>
 								<td>profit</td>
-								<td>{sellData(sellOption, sellPrice).profit.pg}</td>
-								<td>{sellData(sellOption, sellPrice).profit.total}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).profit.pg}</td>
+								<td>{sellData(sellOption, sellPrice, includeSetupCosts).profit.total}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -338,7 +451,7 @@
 		{:else if tabSet === 3}
 			<div class="flex truncate flex-wrap gap-2 justify-center">
 				<!-- Native Table Element -->
-				<table class="table table-hover max-w-[15rem] table-compact">
+				<table class="table table-hover w-96 table-compact">
 					<thead>
 						<tr>
 							<th>Equipment</th>
@@ -347,35 +460,40 @@
 							<th>Total</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="capitalize">
 						<tr>
-							<td>Lights</td>
-							<td>2</td>
-							<td>$300</td>
-							<td>$685.71</td>
+							<td>filters</td>
+							<td>{equipmentData(cropAmount).text.filters.num}</td>
+							<td>{equipmentData(cropAmount).text.filters.each}</td>
+							<td>{equipmentData(cropAmount).text.filters.total}</td>
 						</tr>
 						<tr>
-							<td>Pots</td>
-							<td>2</td>
-							<td>$300</td>
-							<td>$685.71</td>
+							<td>lights</td>
+							<td>{equipmentData(cropAmount).text.lights.num}</td>
+							<td>{equipmentData(cropAmount).text.lights.each}</td>
+							<td>{equipmentData(cropAmount).text.lights.total}</td>
 						</tr>
 						<tr>
-							<td>Dryers</td>
-							<td>2</td>
-							<td>$300</td>
-							<td>$685.71</td>
+							<td>pots</td>
+							<td>{equipmentData(cropAmount).text.pots.num}</td>
+							<td>{equipmentData(cropAmount).text.pots.each}</td>
+							<td>{equipmentData(cropAmount).text.pots.total}</td>
+						</tr>
+						<tr>
+							<td>dryers</td>
+							<td>{equipmentData(cropAmount).text.dryers.num}</td>
+							<td>{equipmentData(cropAmount).text.dryers.each}</td>
+							<td>{equipmentData(cropAmount).text.dryers.total}</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr class="table-row-checked">
-							<th class="text-right" colspan="3">Setup Cost</th>
-							<td>100</td>
+							<th class="text-right">Setup Cost</th>
+							<td>{equipmentData(cropAmount).text.setUpCost}</td>
+							<th class="text-right">Total Crop Cost</th>
+							<td>{equipmentData(cropAmount).text.totalCropCost}</td>
 						</tr>
-						<tr class="table-row-checked">
-							<th class="text-right" colspan="3">Total Crop Cost</th>
-							<td>100</td>
-						</tr>
+						<tr class="table-row-checked" />
 					</tfoot>
 				</table>
 			</div>
