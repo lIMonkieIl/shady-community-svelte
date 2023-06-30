@@ -11,9 +11,9 @@
 		}
 	}
 	$: takeALoss = false;
-	let cropAmount = 5;
+	let cropAmount = 1;
 	let showSetUpCost: boolean;
-	let tabSet: number = 2;
+	let tabSet: number = 0;
 	let sellPrice: number = 10;
 	let show: 'crop' | 'plant' = 'crop';
 	function seedData(show: 'crop' | 'plant', cropAmount: number) {
