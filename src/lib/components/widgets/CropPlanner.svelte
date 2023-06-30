@@ -10,6 +10,7 @@
 			showSetUpCost = true;
 		}
 	}
+	$: takeALoss = false;
 	let cropAmount = 5;
 	let showSetUpCost: boolean;
 	let tabSet: number = 2;
@@ -66,17 +67,23 @@
 	let includeSetupCosts: boolean = false;
 	let sellOption: 'gang' | 'client' = 'client';
 	function sellData(sellOption: 'gang' | 'client', sellPrice: number, includeSetupCosts: boolean) {
+		if (sellPrice === null) sellPrice = 0;
+		let math =
+			selectedSeed.price * cropAmount +
+			(includeSetupCosts ? equipmentData(cropAmount).data.setUpCost : 0);
+
 		if (sellOption === 'client') {
+			takeALoss =
+				((sellPrice - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+					(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) /
+					(selectedSeed.strainYield * selectedSeed.hours * cropAmount) <=
+				0;
 			return {
 				cost: {
-					pg: `$ ${(
-						(selectedSeed.price * cropAmount) /
-						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2)}`,
-					total: `$ ${(
-						selectedSeed.price * cropAmount +
-						(includeSetupCosts ? equipmentData(cropAmount).data.setUpCost : 0)
-					).toFixed(2)}`
+					pg: `$ ${(math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)).toFixed(
+						2
+					)}`,
+					total: `$ ${math.toFixed(2)}`
 				},
 				sell: {
 					pg: `$ ${sellPrice.toFixed(2)}`,
@@ -87,28 +94,27 @@
 				},
 				profit: {
 					pg: `$ ${(
-						((sellPrice -
-							(selectedSeed.price * cropAmount) /
-								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+						((sellPrice - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 							(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
 					).toFixed(2)}`,
 					total: `$ ${(
-						(sellPrice -
-							(selectedSeed.price * cropAmount) /
-								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+						(sellPrice - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
 					).toFixed(2)}`
 				}
 			};
 		} else {
+			takeALoss =
+				(4 - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+					(selectedSeed.strainYield * selectedSeed.hours * cropAmount) <=
+				0;
 			return {
 				cost: {
-					pg: `$ ${(
-						(selectedSeed.price * cropAmount) /
-						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
-					).toFixed(2)}`,
-					total: `$ ${(selectedSeed.price * cropAmount).toFixed(2)}`
+					pg: `$ ${(math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)).toFixed(
+						2
+					)}`,
+					total: `$ ${math.toFixed(2)}`
 				},
 				sell: {
 					pg: `$ ${(4).toFixed(2)}`,
@@ -118,16 +124,12 @@
 				},
 				profit: {
 					pg: `$ ${(
-						((4 -
-							(selectedSeed.price * cropAmount) /
-								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+						((4 - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 							(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) /
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
 					).toFixed(2)}`,
 					total: `$ ${(
-						(4 -
-							(selectedSeed.price * cropAmount) /
-								(selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
+						(4 - math / (selectedSeed.strainYield * selectedSeed.hours * cropAmount)) *
 						(selectedSeed.strainYield * selectedSeed.hours * cropAmount)
 					).toFixed(2)}`
 				}
@@ -226,10 +228,10 @@
 	<Tab bind:group={tabSet} name="tab1" value={1}>
 		<span>Yield</span>
 	</Tab>
-	<Tab bind:group={tabSet} name="tab2" value={2}>Profit</Tab>
 	{#if showSetUpCost}
 		<Tab bind:group={tabSet} name="tab3" value={3}>Set Up</Tab>
 	{/if}
+	<Tab bind:group={tabSet} name="tab2" value={2}>Profit</Tab>
 
 	<!-- Tab Panels --->
 	<svelte:fragment slot="panel">
@@ -320,11 +322,11 @@
 				</label>
 			</div>
 		{:else if tabSet === 1}
-			<div class="flex truncate flex-wrap gap-2 justify-center">
+			<div class="flex truncate flex-wrap gap-2 table-container justify-center">
 				<!-- Native Table Element -->
 				{#key show}
 					<div class="flex gap-4 flex-col">
-						<table class="table table-hover variant-ghost-surface w-96 table-compact">
+						<table class="table table-hover variant-ghost-surface max-w-sm table-compact">
 							<thead class="">
 								<tr>
 									<th>
@@ -367,7 +369,7 @@
 				{/key}
 			</div>
 		{:else if tabSet === 2}
-			<div class="flex w-full items-center justify-center">
+			<div class="flex w-full items-center table-container justify-center">
 				<div class="flex w-fit gap-4 items-center flex-col">
 					<div class="flex flex-col w-fit gap-2">
 						{#if showSetUpCost}
@@ -393,32 +395,16 @@
 								</RadioGroup>
 							</div>
 						{/if}
-
-						<label class="label flex gap-4 items-center justify-between">
-							<span class="font-semibold capitalize">sell price ?</span>
-							<div
-								class="input variant-ghost-primary flex px-3 py-2 items-center w-32 justify-center"
-							>
-								<span class="selection:bg-secondary-400-500-token">$</span>
-								<input
-									class="border-transparent focus:border-transparent selection:bg-secondary-400-500-token bg-transparent w-full focus:ring-0 p-0 m-0"
-									min="1"
-									bind:value={sellPrice}
-									title="sell_price"
-									type="number"
-								/>
-							</div>
-						</label>
 					</div>
 					<!-- Native Table Element -->
-					<table class="table table-hover w-96 variant-ghost table-compact">
+					<table class="table table-hover max-w-sm variant-ghost table-compact">
 						<thead>
 							<tr>
 								<th>
 									<select
 										placeholder={'select'}
 										bind:value={sellOption}
-										class="select -m-2 variant-ghost-primary capitalize"
+										class="select -m-2 variant-ghost-primary w-fit truncate capitalize"
 									>
 										<option class="capitalize" value={'gang'}>gang</option>
 										<option value={'client'} class="capitalize">client</option>
@@ -436,12 +422,32 @@
 							</tr>
 							<tr>
 								<td>sell</td>
-								<td>{sellData(sellOption, sellPrice, includeSetupCosts).sell.pg}</td>
+								<td>
+									{#if sellOption === 'client'}
+										<div
+											class="input variant-ghost-primary rounded-container-token flex items-center w-20 p-1 -m-2 justify-center"
+										>
+											<span class="selection:bg-secondary-400-500-token">$</span>
+											<input
+												class="border-transparent focus:border-transparent selection:bg-secondary-400-500-token bg-transparent w-full focus:ring-0 p-0 m-0"
+												min={1}
+												bind:value={sellPrice}
+												title="sell_price"
+												type="number"
+											/>
+										</div>
+									{:else}
+										{sellData(sellOption, sellPrice, includeSetupCosts).sell.pg}
+									{/if}
+								</td>
 								<td>{sellData(sellOption, sellPrice, includeSetupCosts).sell.total}</td>
 							</tr>
 							<tr>
 								<td>profit</td>
-								<td>{sellData(sellOption, sellPrice, includeSetupCosts).profit.pg}</td>
+								<td
+									class={`${takeALoss ? 'text-error-400-500-token' : 'text-success-400-500-token'}`}
+									>{sellData(sellOption, sellPrice, includeSetupCosts).profit.pg}</td
+								>
 								<td>{sellData(sellOption, sellPrice, includeSetupCosts).profit.total}</td>
 							</tr>
 						</tbody>
@@ -449,9 +455,11 @@
 				</div>
 			</div>
 		{:else if tabSet === 3}
-			<div class="flex truncate flex-wrap gap-2 justify-center">
+			<div
+				class="flex truncate table-container flex-wrap w-full h-full gap-2 overflow-scroll justify-center"
+			>
 				<!-- Native Table Element -->
-				<table class="table table-hover w-96 table-compact">
+				<table class="table table-hover max-w-sm table-compact">
 					<thead>
 						<tr>
 							<th>Equipment</th>
@@ -486,14 +494,15 @@
 							<td>{equipmentData(cropAmount).text.dryers.total}</td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr class="table-row-checked">
-							<th class="text-right">Setup Cost</th>
-							<td>{equipmentData(cropAmount).text.setUpCost}</td>
-							<th class="text-right">Total Crop Cost</th>
+					<tfoot class=" p-0">
+						<tr class="">
+							<th colspan="3" class="text-right">Total Crop Cost</th>
 							<td>{equipmentData(cropAmount).text.totalCropCost}</td>
 						</tr>
-						<tr class="table-row-checked" />
+						<tr class="">
+							<th colspan="3" class="text-right">Setup Cost</th>
+							<td>{equipmentData(cropAmount).text.setUpCost}</td>
+						</tr>
 					</tfoot>
 				</table>
 			</div>
