@@ -448,7 +448,11 @@
 									class={`${takeALoss ? 'text-error-400-500-token' : 'text-success-400-500-token'}`}
 									>{sellData(sellOption, sellPrice, includeSetupCosts).profit.pg}</td
 								>
-								<td>{sellData(sellOption, sellPrice, includeSetupCosts).profit.total}</td>
+								<td
+									class={`${takeALoss ? 'text-error-400-500-token' : 'text-success-400-500-token'}`}
+								>
+									{sellData(sellOption, sellPrice, includeSetupCosts).profit.total}</td
+								>
 							</tr>
 						</tbody>
 					</table>

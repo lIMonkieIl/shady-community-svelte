@@ -1,60 +1,63 @@
 <script lang="ts">
+	import { blur } from 'svelte/transition';
+
 	let flipped = false;
+	export let background = 'bg-red-500';
+	export let border = 'border rounded';
+	export let flippedBackground: string | undefined = undefined;
+	export let speed = 0.5;
 </script>
 
-<button class="card" class:flipped on:click={() => (flipped = !flipped)}>
-	<div class="front">
-		<slot name="front">font of card</slot>
-	</div>
-	<div class="back">
-		<slot name="back">back of card</slot>
-	</div>
-</button>
+<div class="scene m-0.5 z-10 w-52 h-64">
+	<button
+		class={`${
+			typeof flippedBackground === 'string'
+				? flipped
+					? flippedBackground
+					: background
+				: background
+		} ${border} card-hover main relative w-full h-full`}
+		class:flipped
+		style={`transition: transform ${speed}s, background-color ${0.2}s; transition-delay: 0s, ${
+			speed / 4
+		}s;`}
+		on:click={(e) => {
+			flipped = !flipped;
+		}}
+	>
+		{#if flipped}
+			<div
+				transition:blur={{ delay: speed, amount: 40 }}
+				class="h-full w-full top-0 overflow-hidden absolute cardBack"
+			>
+				<slot name="back"><span>back of card</span></slot>
+			</div>
+		{:else}
+			<div
+				transition:blur={{ delay: speed, amount: 40 }}
+				class={`h-full w-full top-0 overflow-hidden absolute`}
+			>
+				<slot name="front"><span>front of card</span></slot>
+			</div>
+		{/if}
+	</button>
+</div>
 
 <style>
-	.card {
-		position: relative;
-		aspect-ratio: 2.5 / 3.5;
-		font-size: min(1vh, 0.25rem);
-		height: 80em;
-		background: var(--bg-1);
-		border-radius: 2em;
-		transform: rotateY(180deg);
-		transition: transform 0.4s;
+	.scene {
+		perspective: 600px;
+	}
+
+	.main {
 		transform-style: preserve-3d;
-		padding: 0;
-		user-select: none;
-		cursor: pointer;
+		transform-origin: center right;
 	}
 
-	.card.flipped {
-		transform: rotateY(0);
+	.main.flipped {
+		transform: translateX(-100%) rotateY(-180deg);
 	}
 
-	.front,
-	.back {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		left: 0;
-		top: 0;
-		backface-visibility: hidden;
-		border-radius: 2em;
-		border: 1px solid var(--fg-2);
-		box-sizing: border-box;
-		padding: 2em;
-	}
-
-	.front {
-		background: url(./svelte-logo.svg) no-repeat 5em 5em,
-			url(./svelte-logo.svg) no-repeat calc(100% - 5em) calc(100% - 5em);
-		background-size: 8em 8em, 8em 8em;
-	}
-
-	.back {
+	.cardBack {
 		transform: rotateY(180deg);
 	}
 </style>

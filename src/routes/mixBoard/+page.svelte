@@ -4,11 +4,32 @@
 	import Grid from '$lib/components/Grid/index.svelte';
 	import WidgetButton from '../../lib/components/WidgetButton.svelte';
 	import { storeWidget } from '$lib/stores/storeWidgets';
-	import { widgets } from '$lib/components/widgets/widgets';
+	import type { Widget } from '$lib/components/widgets/widgets';
 	import { ProgressRadial, type PopupSettings, popup } from '@skeletonlabs/skeleton';
-	function retreiveWidgetContent(widget: any) {
-		const item = widgets.find((v) => v.id === widget.id);
-		return item?.data.content;
+	import Options from '$lib/components/widgets/Options.svelte';
+	import MixTable from '$lib/components/widgets/MixTable/MixTable.svelte';
+	import AreaDemand from '$lib/components/widgets/AreaDemand.svelte';
+	import ProfitsTable from '$lib/components/widgets/ProfitsTable.svelte';
+	import MixStats from '$lib/components/widgets/MixStats.svelte';
+	import Actions from '$lib/components/widgets/Actions.svelte';
+	import CropPlanner from '$lib/components/widgets/CropPlanner.svelte';
+	function retreiveWidgetContent(widget: Widget) {
+		switch (widget.id) {
+			case 1:
+				return Options;
+			case 2:
+				return MixTable;
+			case 3:
+				return AreaDemand;
+			case 4:
+				return ProfitsTable;
+			case 5:
+				return MixStats;
+			case 6:
+				return Actions;
+			case 7:
+				return CropPlanner;
+		}
 	}
 
 	$: layout = $storeWidget;

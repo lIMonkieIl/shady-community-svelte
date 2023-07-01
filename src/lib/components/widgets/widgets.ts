@@ -38,7 +38,7 @@ export interface Data {
 	icon: string;
 	about: string;
 	image: string;
-	content: ConstructorOfATypedSvelteComponent;
+	content?: ConstructorOfATypedSvelteComponent;
 }
 
 export interface Widget {
@@ -65,8 +65,7 @@ export const widgets: Widget[] = [
 			name: 'Options',
 			icon: 'fa-gears',
 			about: 'This widget allows you to set to options. Its needed it most cases.',
-			image: '/Options.png',
-			content: Options
+			image: '/Options.png'
 		}
 	},
 	{
@@ -85,8 +84,7 @@ export const widgets: Widget[] = [
 			icon: 'fa-list',
 			about:
 				'This widget is a place to display all ingredients in the mix. Its needed it most cases.',
-			image: '/MixTable.png',
-			content: MixTable
+			image: '/MixTable.png'
 		}
 	},
 	{
@@ -105,8 +103,7 @@ export const widgets: Widget[] = [
 			name: 'Area Demand',
 			icon: 'fa-map-location',
 			about: 'This widget allows you to see the areas your mix could be sold.',
-			image: '/MixDemand.png',
-			content: AreaDemand
+			image: '/MixDemand.png'
 		}
 	},
 	{
@@ -126,8 +123,7 @@ export const widgets: Widget[] = [
 			icon: 'fa-euro-sign',
 			about:
 				'This widget allows you to see the potential profit from selling your mix to clients/gangs and the cost of making the mix.',
-			image: '/ProfitsTable.png',
-			content: ProfitsTable
+			image: '/ProfitsTable.png'
 		}
 	},
 	{
@@ -146,8 +142,7 @@ export const widgets: Widget[] = [
 			name: 'Stats',
 			icon: 'fa-chart-simple',
 			about: 'This widget allows you to see your mix stats like: Addiction, Str, MixStr, Tox.',
-			image: '/MixStats.png',
-			content: MixStats
+			image: '/MixStats.png'
 		}
 	},
 	{
@@ -166,8 +161,7 @@ export const widgets: Widget[] = [
 			name: 'Actions',
 			icon: 'fa-hand-dots',
 			about: 'This widget allows you to do actions like Mix: Saving, Loading, Scaling, Sharing,',
-			image: '/Actions.png',
-			content: Actions
+			image: '/Actions.png'
 		}
 	},
 	{
@@ -185,8 +179,7 @@ export const widgets: Widget[] = [
 			name: 'Crop Planner',
 			icon: 'fa-cannabis',
 			about: 'This widget allows you to plan your indoor/outdoor crops.',
-			image: '/Actions.png',
-			content: CropPlanner
+			image: '/Actions.png'
 		}
 	}
 ];

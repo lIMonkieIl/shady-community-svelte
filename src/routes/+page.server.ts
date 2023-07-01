@@ -1,7 +1,6 @@
 import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
 import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 import type { Actions, PageServerLoad } from './$types';
-
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.getSession();
 
@@ -9,7 +8,6 @@ export const load: PageServerLoad = async (event) => {
 		session
 	};
 };
-
 export const actions: Actions = {
 	// This action is called when the user clicks the theme button
 	setTheme: async ({ cookies, request }) => {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
-	import Ingredients from '$lib/data/Ingredients.json';
+	import IngredientsData from '$lib/data/Ingredients.json';
+	import DrugsData from '$lib/data/Drugs.json';
 	import {
 		ListBox,
 		ListBoxItem,
@@ -8,11 +9,13 @@
 		type PopupSettings,
 		RadioGroup,
 		RadioItem,
-		filter
+		filter,
+		Avatar
 	} from '@skeletonlabs/skeleton';
 	import { fly, fade } from 'svelte/transition';
 	import type { Widget } from '../widgets';
 	import Card from '$lib/components/testing/Card.svelte';
+	import WidgetButton from '$lib/components/WidgetButton.svelte';
 	let viewValue: number = 1;
 	let searchFilterValue: string = 'all';
 
@@ -25,23 +28,35 @@
 	function onlyUnique(value: any, index: number, array: any) {
 		return array.indexOf(value) === index;
 	}
-	let searchFilters = [...Ingredients.map((i) => i.category).filter(onlyUnique), 'all', 'pre-mix'];
+	let ingredients = [
+		...IngredientsData.map((ingr) => {
+			return {
+				...ingr,
+				averagePrice: 0,
+				knownAs: []
+			};
+		}),
+		...DrugsData
+	];
+	let searchFilters = [...ingredients.map((i) => i.category).filter(onlyUnique), 'all', 'pre-mix'];
 	let searchValue = '';
-	$: items = Ingredients.filter((ingr) => {
-		if (searchFilterValue === 'all' || searchFilterValue === ingr.category) {
-			return ingr;
-		}
-	}).filter((ingr) => {
-		if (ingr.name.toLowerCase().includes(searchValue.toLowerCase())) {
-			return ingr;
-		}
-		if (ingr.knownAs?.find((i) => i.toLowerCase().includes(searchValue.toLowerCase()))) {
-			return ingr;
-		}
-	});
+	$: items = ingredients
+		.filter((ingr) => {
+			if (searchFilterValue === 'all' || searchFilterValue === ingr.category) {
+				return ingr;
+			}
+		})
+		.filter((ingr) => {
+			if (ingr.name.toLowerCase().includes(searchValue.toLowerCase())) {
+				return ingr;
+			}
+			if (ingr.knownAs?.find((i) => i.toLowerCase().includes(searchValue.toLowerCase()))) {
+				return ingr;
+			}
+		});
 </script>
 
-<div class={`flex flex-col gap-2`}>
+<div class={`flex flex-col overflow-scroll w-full h-full gap-2`}>
 	<div class="flex gap-2 flex-wrap">
 		<RadioGroup
 			hover={' hover:variant-soft-secondary'}
@@ -85,7 +100,7 @@
 					placeholder={`Search...`}
 				/>
 			</div>
-			<div class="card w-28 shadow-xl p-1 overflow-hidden" data-popup="popupSearchFilter">
+			<div class="card w-28 z-50 shadow-xl p-1 overflow-hidden" data-popup="popupSearchFilter">
 				<ListBox rounded={'none'}>
 					{#each searchFilters as filter}
 						{#if filter !== searchFilterValue}
@@ -101,13 +116,47 @@
 			</div>
 		{/if}
 	</div>
-	<div class="flex gap-2 justify-center h-full overflow-x-scroll flex-wrap">
+	<div class="flex justify-center h-full w-full overflow-x-scroll flex-wrap">
 		{#if viewValue === 0}
 			<span>Mix</span>
 		{:else if viewValue === 1}
 			{#if items.length}
 				{#each items as ingredient (ingredient.id)}
-					<Card />
+					<Card
+						speed={0.8}
+						border={''}
+						background={'card variant-ghost-primary'}
+						flippedBackground={'card variant-ghost-secondary'}
+					>
+						<svelte:fragment slot="front"
+							><div class="flex items-center relative justify-between h-full p-3 flex-col">
+								<span
+									class="absolute cursor-text select-text right-1 text-surface-400-500-token opacity-60 top-0 text-xs"
+									>{ingredient.id}</span
+								>
+								<div class="flex flex-col items-center justify-center">
+									<div class="card w-fit variant-soft-primary">
+										<img
+											loading="lazy"
+											src={ingredient.image}
+											class="w-20 h-20"
+											alt={ingredient.name}
+										/>
+									</div>
+									<span class="capitalize select-text font-semibold">{ingredient.name}</span>
+								</div>
+
+								<div>$10 - £14 per g</div>
+								<button
+									on:click={(e) => {
+										e.stopPropagation();
+									}}
+									class="btn w-full variant-ghost-secondary">add</button
+								>
+							</div></svelte:fragment
+						>
+						<svelte:fragment slot="back">back</svelte:fragment>
+					</Card>
 				{/each}
 			{:else}
 				<div
