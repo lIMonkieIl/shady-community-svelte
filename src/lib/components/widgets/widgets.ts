@@ -1,11 +1,4 @@
-import Actions from '$lib/components/widgets/Actions.svelte';
-import AreaDemand from '$lib/components/widgets/AreaDemand.svelte';
-import MixStats from '$lib/components/widgets/MixStats.svelte';
-import MixTable from '$lib/components/widgets/MixTable/MixTable.svelte';
-import Options from '$lib/components/widgets/Options.svelte';
-import ProfitsTable from '$lib/components/widgets/ProfitsTable.svelte';
 import gridHelp from '../Grid/utils/helper';
-import CropPlanner from './CropPlanner.svelte';
 
 export interface Helper {
 	fixed: boolean;
@@ -32,8 +25,14 @@ export interface Collapsed {
 	w: number;
 	h: number;
 }
-
+export enum STATUS {
+	BETA = 'beta',
+	INACTIVE = 'inactive',
+	ACTIVE = 'active',
+	COMING_SOON = 'coming_soon'
+}
 export interface Data {
+	status: STATUS;
 	name: string;
 	icon: string;
 	about: string;
@@ -62,6 +61,7 @@ export const widgets: Widget[] = [
 		collapsed: { active: false, w: 0, h: 0 },
 
 		data: {
+			status: STATUS.COMING_SOON,
 			name: 'Options',
 			icon: 'fa-gears',
 			about: 'This widget allows you to set to options. Its needed it most cases.',
@@ -80,6 +80,7 @@ export const widgets: Widget[] = [
 		id: 2,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.BETA,
 			name: 'Table',
 			icon: 'fa-list',
 			about:
@@ -100,6 +101,7 @@ export const widgets: Widget[] = [
 		id: 3,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.COMING_SOON,
 			name: 'Area Demand',
 			icon: 'fa-map-location',
 			about: 'This widget allows you to see the areas your mix could be sold.',
@@ -119,6 +121,7 @@ export const widgets: Widget[] = [
 		id: 8,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.COMING_SOON,
 			name: 'Profits/Cost Table',
 			icon: 'fa-euro-sign',
 			about:
@@ -139,6 +142,7 @@ export const widgets: Widget[] = [
 		id: 5,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.COMING_SOON,
 			name: 'Stats',
 			icon: 'fa-chart-simple',
 			about: 'This widget allows you to see your mix stats like: Addiction, Str, MixStr, Tox.',
@@ -158,6 +162,7 @@ export const widgets: Widget[] = [
 		id: 6,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.COMING_SOON,
 			name: 'Actions',
 			icon: 'fa-hand-dots',
 			about: 'This widget allows you to do actions like Mix: Saving, Loading, Scaling, Sharing,',
@@ -176,6 +181,7 @@ export const widgets: Widget[] = [
 		id: 7,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			status: STATUS.BETA,
 			name: 'Crop Planner',
 			icon: 'fa-cannabis',
 			about: 'This widget allows you to plan your indoor/outdoor crops.',

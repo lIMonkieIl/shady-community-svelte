@@ -2,7 +2,7 @@
 	import gridHelp from './Grid/utils/helper';
 	import { storeWidget } from '$lib/stores/storeWidgets';
 	import { Accordion, AccordionItem, type PopupSettings, popup } from '@skeletonlabs/skeleton';
-	import { widgets } from './widgets/widgets';
+	import { STATUS, widgets } from './widgets/widgets';
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import { adjust } from './Grid/utils/item';
@@ -12,7 +12,30 @@
 		target: 'widgets-panel',
 		closeQuery: '#will-close'
 	};
-	$: inactiveWidgets = widgets.filter((w: any) => !$storeWidget.some((s: any) => s.id === w.id));
+	$: inactiveWidgets = widgets
+		.filter((w: any) => !$storeWidget.some((s: any) => s.id === w.id))
+		.sort((a, b) => {
+			const statusA = a.data.status;
+			const statusB = b.data.status;
+			function statusOrder(status: STATUS) {
+				switch (status) {
+					case STATUS.ACTIVE:
+						return 0;
+					case STATUS.BETA:
+						return 1;
+					case STATUS.INACTIVE:
+						return 2;
+					case STATUS.COMING_SOON:
+						return 3;
+
+					default:
+						return 4;
+				}
+			}
+			const orderA = statusOrder(statusA);
+			const orderB = statusOrder(statusB);
+			return orderA - orderB;
+		});
 </script>
 
 <!-- popup trigger -->
@@ -44,8 +67,15 @@
 			<div
 				animate:flip={{ delay: 200, duration: 400 }}
 				transition:fly|local={{ x: 100, duration: 400 }}
-				class="block overflow-hidden variant-ghost-primary card card-hover mb-4 cursor-pointer"
+				class="block overflow-hidden relative variant-ghost-primary card card-hover mb-4 cursor-pointer"
 			>
+				{#if widget.data.status === STATUS.BETA}
+					<span class="badge absolute top-4 font-bold right-4 variant-filled-secondary">BETA</span>
+				{:else if widget.data.status === STATUS.COMING_SOON}
+					<span class="badge absolute top-4 font-bold right-4 variant-filled-surface"
+						>COMING SOON</span
+					>
+				{/if}
 				<section class="overflow-hidden w-full">
 					<img
 						src={widget.data.image}
@@ -65,16 +95,51 @@
 						<!-- ... -->
 					</Accordion>
 					<div class="p-2 flex justify-center items-center">
-						<button
-							on:click|once={() => {
-								storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
-							}}
-							type="button"
-							class="btn w-full variant-ghost-secondary"
-						>
-							<i class="fa-solid fa-circle-plus" />
-							<span class="font-semibold">Add Widget</span>
-						</button>
+						{#if widget.data.status === STATUS.ACTIVE}
+							<button
+								on:click|once={() => {
+									storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
+								}}
+								type="button"
+								class="btn w-full variant-ghost-secondary"
+							>
+								<i class="fa-solid fa-circle-plus" />
+								<span class="font-semibold">Add Widget</span>
+							</button>
+						{:else if widget.data.status === STATUS.COMING_SOON}
+							<button
+								disabled
+								on:click|once={() => {
+									storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
+								}}
+								type="button"
+								class="btn w-full variant-ghost-secondary"
+							>
+								<span class="font-semibold">Coming Soon</span>
+							</button>
+						{:else if widget.data.status === STATUS.INACTIVE}
+							<button
+								disabled
+								on:click|once={() => {
+									storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
+								}}
+								type="button"
+								class="btn w-full variant-ghost-secondary"
+							>
+								<span class="font-semibold">Disabled</span>
+							</button>
+						{:else if widget.data.status === STATUS.BETA}
+							<button
+								on:click|once={() => {
+									storeWidget.set(gridHelp.adjust([...$storeWidget, widget], 16));
+								}}
+								type="button"
+								class="btn w-full variant-ghost-secondary"
+							>
+								<i class="fa-solid fa-circle-plus" />
+								<span class="font-semibold">Add Widget</span>
+							</button>
+						{/if}
 					</div>
 				</section>
 			</div>
