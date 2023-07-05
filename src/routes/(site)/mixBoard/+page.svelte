@@ -2,36 +2,19 @@
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import Grid from '$lib/components/Grid/index.svelte';
-	import WidgetButton from '../../lib/components/WidgetButton.svelte';
 	import { storeWidget } from '$lib/stores/storeWidgets';
 	import type { Widget } from '$lib/components/widgets/widgets';
 	import { ProgressRadial, type PopupSettings, popup } from '@skeletonlabs/skeleton';
 	import Options from '$lib/components/widgets/Options.svelte';
 	import MixTable from '$lib/components/widgets/MixTable/MixTable.svelte';
 	import AreaDemand from '$lib/components/widgets/AreaDemand.svelte';
-	import ProfitsTable from '$lib/components/widgets/ProfitsTable.svelte';
 	import MixStats from '$lib/components/widgets/MixStats.svelte';
+	import ProfitsTable from '$lib/components/widgets/ProfitsTable.svelte';
 	import Actions from '$lib/components/widgets/Actions.svelte';
 	import CropPlanner from '$lib/components/widgets/CropPlanner.svelte';
-	function retreiveWidgetContent(widget: Widget) {
-		switch (widget.id) {
-			case 1:
-				return Options;
-			case 2:
-				return MixTable;
-			case 3:
-				return AreaDemand;
-			case 4:
-				return ProfitsTable;
-			case 5:
-				return MixStats;
-			case 6:
-				return Actions;
-			case 7:
-				return CropPlanner;
-		}
-	}
+	import WidgetButton from '$lib/components/WidgetButton.svelte';
 
+	export let data;
 	$: layout = $storeWidget;
 	$: items = layout;
 	const cols = [[1100, 16]];
@@ -158,7 +141,21 @@
 				</div>
 				{#if !dataItem.collapsed.active}
 					<div class={`card h-full w-full p-2 overflow-hidden rounded-t-none rounded-b-none`}>
-						<svelte:component this={retreiveWidgetContent(dataItem)} />
+						{#if dataItem.id === 1}
+							<Options />
+						{:else if dataItem.id === 2}
+							<MixTable ingredients={data.ingredients} />
+						{:else if dataItem.id === 3}
+							<AreaDemand />
+						{:else if dataItem.id === 4}
+							<ProfitsTable />
+						{:else if dataItem.id === 5}
+							<MixStats />
+						{:else if dataItem.id === 6}
+							<Actions />
+						{:else if dataItem.id === 7}
+							<CropPlanner />
+						{/if}
 					</div>
 				{/if}
 

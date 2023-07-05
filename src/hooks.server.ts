@@ -1,8 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
-import { SvelteKitAuth } from '@auth/sveltekit';
 import { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '$env/static/private';
-
+import { SvelteKitAuth } from '@auth/sveltekit';
+import type { User } from '$lib/types/authjs-svelte';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 export const handle = SvelteKitAuth({
 	providers: [
 		{
@@ -24,17 +25,19 @@ export const handle = SvelteKitAuth({
 					profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`;
 				}
 				return {
-					id: String(profile.id),
-					name: String(profile.username),
-					discriminator: String(profile.discriminator),
-					email: profile.email,
-					image: String(profile.image_url)
+					id: profile.id as string,
+					discordId: profile.id as string,
+					username: profile.username as string,
+					email: profile.email as string,
+					emailVerified: profile.email_verified,
+					avatar: profile.image_url as string
 				};
 			}
 		}
 	],
+	adapter: PrismaAdapter(prisma),
 	session: {
-		strategy: 'jwt',
+		strategy: 'database',
 		// Seconds - How long until an idle session expires and is no longer valid.
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 
@@ -44,28 +47,16 @@ export const handle = SvelteKitAuth({
 		updateAge: 24 * 60 * 60 // 24 hours
 	},
 	callbacks: {
-		async jwt({ token, account, user }) {
-			if (account) {
-				token.accessToken = account.access_token;
-			}
-			if (user) {
-				token.email = user.email;
-				token.name = user.name;
-				token.picture = user.image;
-				token.sub = user.id;
-			}
-			return token;
-		},
-		async session({ session, token }) {
-			/**
-			 *
-			 */
-			session.user = {
-				email: token.email,
-				image: token.picture,
-				name: token.name,
-				id: token.sub
+		async session({ session, user, newSession, trigger }) {
+			const myUser = user as unknown as User;
+			const sessionUser = {
+				discordId: myUser.discordId,
+				username: myUser.username,
+				email: myUser.email,
+				avatar: myUser.avatar,
+				displayName: myUser.displayName
 			};
+			session.user = sessionUser;
 			return session;
 		}
 	}

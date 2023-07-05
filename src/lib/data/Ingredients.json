@@ -1,122 +1,210 @@
 [
-  {
-    "id": "ADDITIVE-PILL-PARACETAMOL",
-    "name": "paracetamol",
-    "type": "PILL",
-    "image": "/images/ingredients/PillsBox.webp",
-    "isWet": false,
-    "toxicity": 12,
-    "strength": 3,
-    "mixStrength": 1.3,
-    "addiction": 4,
-    "category": "ADDITIVE"
-  },
-  {
-    "id": "ADDITIVE-PILL-IBUPROFEN",
-    "name": "ibuprofen",
-    "image": "/images/ingredients/PillsBox.webp",
-    "type": "PILL",
-    "isWet": false,
-    "toxicity": 12,
-    "strength": 3,
-    "mixStrength": 1.3,
-    "addiction": 3,
-    "category": "ADDITIVE"
-  },
-  {
-    "id": "ADDITIVE-PILL-VIAGRA",
-    "name": "viagra",
-    "image": "/images/ingredients/PillsBoxOther.webp",
-    "type": "PILL",
-    "isWet": false,
-    "toxicity": 3,
-    "strength": 2,
-    "mixStrength": 1.6,
-    "addiction": 7,
-    "category": "ADDITIVE"
-  },
-  {
-    "id": "ADDITIVE-PILL-NEBILANEX",
-    "name": "nebilanex",
-    "image": "/images/ingredients/PillsBoxOther.webp",
-    "type": "PILL",
-    "isWet": false,
-    "category": "ADDITIVE",
-    "toxicity": 15,
-    "strength": 2,
-    "mixStrength": 2,
-    "addiction": 1.4
-  },
-  {
-    "id": "FILLER-POWDER-SALT",
-    "name": "salt",
-    "image": "/images/ingredients/SpiceBag.webp",
-    "type": "POWDER",
-    "isWet": false,
-    "category": "FILLER",
-    "toxicity": 2,
-    "strength": 0.5,
-    "mixStrength": 1,
-    "addiction": 0
-  },
-  {
-    "id": "FILLER-GRANULATE-WASHING_POWDER",
-    "name": "washing powder",
-    "image": "/images/ingredients/Box200g.webp",
-    "type": "GRANULATE",
-    "isWet": false,
-    "category": "FILLER",
-    "toxicity": 9,
-    "strength": 0,
-    "mixStrength": 1.1,
-    "addiction": 0
-  },
-  {
-    "id": "FILLER-POWDER-BAKING_SODA",
-    "name": "baking soda",
-    "image": "/images/ingredients/SpiceBagOther.webp",
-    "type": "POWDER",
-    "isWet": false,
-    "category": "FILLER",
-    "toxicity": 0,
-    "strength": 0,
-    "mixStrength": 0.9,
-    "addiction": 0
-  },
-  {
-    "id": "FILLER-CRYSTAL-SUGAR",
-    "name": "sugar",
-    "image": "/images/ingredients/Sugar.webp",
-    "type": "CRYSTAL",
-    "isWet": false,
-    "category": "FILLER",
-    "toxicity": 1.3,
-    "strength": 0,
-    "mixStrength": 1,
-    "addiction": 0
-  },
-  {
-    "id": "ADDITIVE-LIQUID-ACETONE",
-    "name": "acetone",
-    "image": "/images/ingredients/FluidBottle.webp",
-    "type": "LIQUID",
-    "isWet": true,
-    "category": "ADDITIVE",
-    "toxicity": 25,
-    "strength": 4,
-    "mixStrength": 3,
-    "addiction": 1
-  },
-  {
-    "id": "ADDITIVE-POWDER-FENTANYL",
-    "name": "fentanyl",
-    "image": "/images/drugs/BagPowder.webp",
-    "type": "POWDER",
-    "isWet": false,
-    "category": "ADDITIVE",
-    "toxicity": 18,
-    "strength": 6,
-    "mixStrength": 3,
-    "addiction": 9
-  }
+	{
+		"id": "ADDITIVE-PILL-PARACETAMOL",
+		"name": "paracetamol",
+		"type": "PILL",
+		"image": "/images/ingredients/PillsBox.webp",
+		"isWet": false,
+		"toxicity": 12,
+		"strength": 3,
+		"mixStrength": 1.3,
+		"addiction": 4,
+		"category": "ADDITIVE",
+		"purchase": [
+			{
+				"location": "drug store",
+				"costs": 2.25
+			}
+		]
+	},
+	{
+		"id": "ADDITIVE-PILL-IBUPROFEN",
+		"name": "ibuprofen",
+		"image": "/images/ingredients/PillsBox.webp",
+		"type": "PILL",
+		"isWet": false,
+		"toxicity": 12,
+		"strength": 3,
+		"mixStrength": 1.3,
+		"addiction": 3,
+		"category": "ADDITIVE",
+		"purchase": [
+			{
+				"location": "gas station",
+				"costs": 2.5
+			},
+			{
+				"location": "drug store",
+				"costs": 2.75
+			},
+			{
+				"location": "local shop",
+				"costs": 2.5
+			}
+		]
+	},
+	{
+		"id": "ADDITIVE-PILL-VIAGRA",
+		"name": "viagra",
+		"image": "/images/ingredients/PillsBoxOther.webp",
+		"type": "PILL",
+		"isWet": false,
+		"toxicity": 3,
+		"strength": 2,
+		"mixStrength": 1.6,
+		"addiction": 7,
+		"category": "ADDITIVE",
+		"purchase": [
+			{
+				"location": "drug store",
+				"costs": 4.66
+			}
+		]
+	},
+	{
+		"id": "ADDITIVE-PILL-NEBILANEX",
+		"name": "nebilanex",
+		"image": "/images/ingredients/PillsBoxOther.webp",
+		"type": "PILL",
+		"isWet": false,
+		"category": "ADDITIVE",
+		"toxicity": 15,
+		"strength": 2,
+		"mixStrength": 2,
+		"addiction": 1.4,
+		"purchase": [
+			{
+				"location": "drug store",
+				"costs": 6
+			}
+		]
+	},
+	{
+		"id": "FILLER-POWDER-SALT",
+		"name": "salt",
+		"image": "/images/ingredients/SpiceBag.webp",
+		"type": "POWDER",
+		"isWet": false,
+		"category": "FILLER",
+		"toxicity": 2,
+		"strength": 0.5,
+		"mixStrength": 1,
+		"addiction": 0,
+		"purchase": [
+			{
+				"location": "local shop",
+				"costs": 0.18
+			},
+			{
+				"location": "gas station",
+				"costs": 0.18
+			}
+		]
+	},
+	{
+		"id": "FILLER-GRANULATE-WASHING_POWDER",
+		"name": "washing powder",
+		"image": "/images/ingredients/Box200g.webp",
+		"type": "GRANULATE",
+		"isWet": false,
+		"category": "FILLER",
+		"toxicity": 9,
+		"strength": 0,
+		"mixStrength": 1.1,
+		"addiction": 0,
+		"purchase": [
+			{
+				"location": "local shop",
+				"costs": 0.25
+			},
+			{
+				"location": "gas station",
+				"costs": 0.25
+			}
+		]
+	},
+	{
+		"id": "FILLER-POWDER-BAKING_SODA",
+		"name": "baking soda",
+		"image": "/images/ingredients/SpiceBagOther.webp",
+		"type": "POWDER",
+		"isWet": false,
+		"category": "FILLER",
+		"toxicity": 0,
+		"strength": 0,
+		"mixStrength": 0.9,
+		"addiction": 0,
+		"purchase": [
+			{
+				"location": "gas station",
+				"costs": 0.67
+			}
+		]
+	},
+	{
+		"id": "FILLER-CRYSTAL-SUGAR",
+		"name": "sugar",
+		"image": "/images/ingredients/Sugar.webp",
+		"type": "CRYSTAL",
+		"isWet": false,
+		"category": "FILLER",
+		"toxicity": 1.3,
+		"strength": 0,
+		"mixStrength": 1,
+		"addiction": 0,
+		"purchase": [
+			{
+				"location": "local shop",
+				"costs": 0.15
+			},
+			{
+				"location": "gas station",
+				"costs": 0.15
+			}
+		]
+	},
+	{
+		"id": "ADDITIVE-LIQUID-ACETONE",
+		"name": "acetone",
+		"image": "/images/ingredients/FluidBottle.webp",
+		"type": "LIQUID",
+		"isWet": true,
+		"category": "ADDITIVE",
+		"toxicity": 25,
+		"strength": 4,
+		"mixStrength": 3,
+		"addiction": 1,
+		"purchase": [
+			{
+				"location": "local shop",
+				"costs": 0.15
+			},
+			{
+				"location": "gas station",
+				"costs": 0.15
+			}
+		]
+	},
+	{
+		"id": "ADDITIVE-POWDER-FENTANYL",
+		"name": "fentanyl",
+		"image": "/images/drugs/BagPowder.webp",
+		"type": "POWDER",
+		"isWet": false,
+		"category": "ADDITIVE",
+		"toxicity": 18,
+		"strength": 6,
+		"mixStrength": 3,
+		"addiction": 9,
+		"purchase": [
+			{
+				"location": "eddie",
+				"costs": 20
+			},
+			{
+				"location": "walther",
+				"costs": 20
+			}
+		]
+	}
 ]

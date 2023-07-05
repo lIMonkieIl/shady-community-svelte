@@ -25,3 +25,5 @@ export function isSkeletonTheme(name: SkeletonThemes['type']): boolean {
 	const found = skeletonThemes.find((theme) => theme.type === name);
 	return found ? true : false;
 }
+
+export const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);

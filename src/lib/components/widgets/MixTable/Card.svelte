@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { safeHeight, safeWidth } from '$lib/types/types';
 	import { blur } from 'svelte/transition';
 
 	let flipped = false;
@@ -6,9 +7,13 @@
 	export let border = 'border rounded';
 	export let flippedBackground: string | undefined = undefined;
 	export let speed = 0.5;
+	export let size: { w: safeWidth; h: safeHeight } = {
+		w: 'w-52',
+		h: 'h-64'
+	};
 </script>
 
-<div class="scene m-0.5 z-10 w-52 h-64">
+<div class={`scene  m-0.5 w z-10 ${size.w} ${size.h}`}>
 	<button
 		class={`${
 			typeof flippedBackground === 'string'
@@ -16,7 +21,7 @@
 					? flippedBackground
 					: background
 				: background
-		} ${border} card-hover main relative w-full h-full`}
+		} ${border} card-hover main relative w-full overflow-hidden h-full`}
 		class:flipped
 		style={`transition: transform ${speed}s, background-color ${0.2}s; transition-delay: 0s, ${
 			speed / 4
@@ -27,14 +32,14 @@
 	>
 		{#if flipped}
 			<div
-				transition:blur={{ delay: speed, amount: 40 }}
+				transition:blur|local={{ delay: speed, amount: 40 }}
 				class="h-full w-full top-0 overflow-hidden absolute cardBack"
 			>
 				<slot name="back"><span>back of card</span></slot>
 			</div>
 		{:else}
 			<div
-				transition:blur={{ delay: speed, amount: 40 }}
+				transition:blur|local={{ delay: speed, amount: 40 }}
 				class={`h-full w-full top-0 overflow-hidden absolute`}
 			>
 				<slot name="front"><span>front of card</span></slot>

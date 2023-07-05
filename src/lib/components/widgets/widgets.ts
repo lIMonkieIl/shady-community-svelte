@@ -11,8 +11,8 @@ export interface Helper {
 		h: number;
 	};
 	max: {
-		// Define the properties inside the max object if applicable
-		// Example: "x": number, "y": number
+		y: number;
+		x: number;
 	};
 	x: number;
 	y: number;

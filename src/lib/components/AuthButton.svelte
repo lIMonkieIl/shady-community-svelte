@@ -5,20 +5,20 @@
 </script>
 
 {#if $page.data.session}
-	<div>
+	<div class="z-0">
 		<!-- trigger -->
 		<button
 			class="btn group hover:variant-soft-surface"
 			use:popup={{ event: 'click', target: 'userMenu' }}
 		>
 			<Avatar
-				src={$page.data.session.user?.image ?? ''}
+				src={$page.data.session.user?.avatar ?? ''}
 				border="border border-surface-300-600-token group-hover:!border-primary-500"
 				cursor="cursor-pointer"
 				width="w-8"
 				rounded="rounded-full"
 			/>
-			<span class="md:block hidden">{$page.data.session.user?.name}</span>
+			<span class="md:block hidden">{$page.data.session.user?.username}</span>
 			<i class="fa-solid fa-caret-down opacity-50" />
 		</button>
 		<!-- popup -->
@@ -41,7 +41,7 @@
 		</div>
 	</div>
 {:else}
-	<button on:click={() => signIn('discord')} type="button" class="btn variant-filled-primary">
+	<button on:click={() => signIn('discord')} type="button" class="btn z-0 variant-filled-primary">
 		<i class="fa-solid fa-right-to-bracket" />
 		<span class="capitalize font-semibold">Sign in</span>
 	</button>

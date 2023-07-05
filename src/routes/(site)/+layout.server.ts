@@ -1,7 +1,8 @@
-import type { LayoutServerLoad } from './$types';
 import { VERCEL_ENV } from '$env/static/private';
 import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
 import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
+import type { Session } from 'inspector';
+import type { LayoutServerLoad } from './$types';
 export const load: LayoutServerLoad = async (event) => {
 	// Get the cookie from the browser called "theme"
 	let theme = event.cookies.get('theme') ?? 'skeleton';
@@ -19,7 +20,7 @@ export const load: LayoutServerLoad = async (event) => {
 		if (customThemeExists(theme as CustomTheme['type'])) {
 			// Returning custom theme
 			return {
-				session: await event.locals.getSession(),
+				session: (await event.locals.getSession()) as unknown as Session | null,
 				currentTheme: customThemeModule(),
 				vercelEnv: VERCEL_ENV
 			};
@@ -33,7 +34,7 @@ export const load: LayoutServerLoad = async (event) => {
 			skeletonThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
 
 		return {
-			session: await event.locals.getSession(),
+			session: (await event.locals.getSession()) as unknown as Session | null,
 			currentTheme: skeletonThemeModule(),
 			vercelEnv: VERCEL_ENV
 		};
@@ -44,7 +45,7 @@ export const load: LayoutServerLoad = async (event) => {
 		skeletonThemeModules[`/node_modules/@skeletonlabs/skeleton/dist/themes/theme-${theme}.css`];
 
 	return {
-		session: await event.locals.getSession(),
+		session: (await event.locals.getSession()) as unknown as Session | null,
 		currentTheme: skeletonThemeModule(),
 		vercelEnv: VERCEL_ENV
 	};

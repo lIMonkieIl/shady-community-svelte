@@ -12,7 +12,7 @@
 	/**
 	 * * Most of the app wide CSS is in this file
 	 */
-	import '../app.postcss';
+	import '../../app.postcss';
 
 	/**
 	 * * Dependency: Floating UI
@@ -44,6 +44,9 @@
 	import { page } from '$app/stores';
 	import { beforeNavigate } from '$app/navigation';
 	import { updated } from '$app/stores';
+	import Drawer from '$lib/components/Drawer.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
+	import ThemeChanger from '$lib/components/ThemeChanger.svelte';
 
 	/**
 	 * * Set body `data-theme` based on current theme status
@@ -53,10 +56,6 @@
 		if (!browser) return;
 		document.body.setAttribute('data-theme', $storeTheme);
 	}
-
-	import ThemeChanger from './../lib/components/ThemeChanger.svelte';
-	import Drawer from './../lib/components/Drawer.svelte';
-	import Sidebar from './../lib/components/Sidebar.svelte';
 
 	/**
 	 * * SEO Meta tags
