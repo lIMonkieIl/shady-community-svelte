@@ -62,8 +62,16 @@
 	// 	}
 	// 	return itemWithHighest;
 	// }
+	const popupHover: PopupSettings = {
+		event: 'hover',
+		target: 'popupHover',
+		placement: 'left-end'
+	};
 </script>
 
+<div class="card text-xs z-50 p-4 variant-filled-secondary" data-popup="popupHover">
+	<p>Tip: Click the ingredient card to flip it</p>
+</div>
 <div class="flex w-fit h-fit items-center">
 	<button
 		class="btn w-fit h-fit rounded-r-none variant-ghost-primary"
@@ -107,7 +115,13 @@
 					flippedBackground={'card variant-ghost-secondary'}
 				>
 					<svelte:fragment slot="front"
-						><div class="flex items-center relative justify-between h-full p-3 flex-col">
+						><div
+							class="flex items-center relative justify-between h-full p-3 cursor-alias flex-col"
+						>
+							<i
+								use:popup={popupHover}
+								class="fa-solid hover:scale-110 top-2 cursor-help right-2 fa-circle-info absolute"
+							/>
 							<!-- {#if calHighValues('addiction') === ingredient}
 								<span class="badge absolute top-4 font-bold right-4 variant-filled-warning"
 									>High Addict</span
@@ -157,7 +171,10 @@
 							{/if}
 							{#if ingredient.demandedIn?.length}
 								<span
-									>Sector: {ingredient.demandedIn.map((mI) => mI.sector).filter(onlyUnique)}</span
+									>Sector: {ingredient.demandedIn
+										.map((mI) => mI.sector)
+										.filter(onlyUnique)
+										.sort()}</span
 								>
 							{/if}
 
