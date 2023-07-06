@@ -24,6 +24,13 @@
 		target: 'mixboard-options-panel'
 	};
 	$: fillSpace = false;
+	function popupHover(id: number): PopupSettings {
+		return {
+			event: 'hover',
+			target: `help-${id}`,
+			placement: 'bottom'
+		};
+	}
 </script>
 
 {#if !gridMounted}
@@ -91,6 +98,16 @@
 					dataItem.collapsed.active ? 'h-8' : 'h-full'
 				} card variant-ghost-secondary flex-col w-full  overflow-hidden`}
 			>
+				{#if dataItem.data.helper !== null}
+					<div class="card z-50 p-4 variant-filled-secondary" data-popup={`help-${dataItem.id}`}>
+						<h1>Tips:</h1>
+						{#each dataItem.data.helper as help}
+							<p class="first-letter:capitalize">{help}.</p>
+						{/each}
+						<div class="arrow variant-filled-secondary" />
+					</div>
+				{/if}
+
 				<div class={`flex px-3 gap-4 items-center p-1 justify-between  text-base rounded-b-none`}>
 					<button
 						on:click={(e) => {
@@ -122,6 +139,14 @@
 						<i class="fa-solid text-base fa-grip" />
 					</div>
 					<div class={`flex justify-center items-center gap-4 ${size.w <= 150 && 'hidden'}`}>
+						{#if dataItem.data.helper?.length}
+							<button
+								use:popup={popupHover(dataItem.id)}
+								class={`hover:scale-125 duration-200 transition-all `}
+								><i class="fa-solid text-fas fa-info-circle" /></button
+							>
+						{/if}
+
 						<button
 							on:click|once={() => storeWidget.actions.removeFromWidgets(dataItem)}
 							class={`hover:scale-125 duration-200 transition-all ${

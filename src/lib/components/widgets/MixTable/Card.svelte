@@ -21,7 +21,7 @@
 					? flippedBackground
 					: background
 				: background
-		} ${border} card-hover main relative w-full overflow-hidden h-full`}
+		} ${border} card-hover main relative w-full  h-full`}
 		class:flipped
 		style={`transition: transform ${speed}s, background-color ${0.2}s; transition-delay: 0s, ${
 			speed / 4
@@ -33,14 +33,14 @@
 		{#if flipped}
 			<div
 				transition:blur|local={{ delay: speed, amount: 40 }}
-				class="h-full w-full top-0 overflow-hidden absolute cardBack"
+				class="h-full w-full top-0 absolute cardBack"
 			>
 				<slot name="back"><span>back of card</span></slot>
 			</div>
 		{:else}
 			<div
 				transition:blur|local={{ delay: speed, amount: 40 }}
-				class={`h-full w-full top-0 overflow-hidden absolute`}
+				class={`h-full w-full top-0 absolute`}
 			>
 				<slot name="front"><span>front of card</span></slot>
 			</div>

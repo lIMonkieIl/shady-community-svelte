@@ -37,6 +37,7 @@ export interface Data {
 	icon: string;
 	about: string;
 	image: string;
+	helper: string[] | null;
 	content?: ConstructorOfATypedSvelteComponent;
 }
 
@@ -65,7 +66,8 @@ export const widgets: Widget[] = [
 			name: 'Options',
 			icon: 'fa-gears',
 			about: 'This widget allows you to set to options. Its needed it most cases.',
-			image: '/Options.png'
+			image: '/Options.png',
+			helper: null
 		}
 	},
 	{
@@ -83,6 +85,7 @@ export const widgets: Widget[] = [
 			status: STATUS.BETA,
 			name: 'Table',
 			icon: 'fa-list',
+			helper: ['click the ingredient cards to see more information'],
 			about:
 				'This widget is a place to display all ingredients in the mix. Its needed it most cases.',
 			image: '/MixTable.png'
@@ -101,6 +104,7 @@ export const widgets: Widget[] = [
 		id: 3,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			helper: null,
 			status: STATUS.COMING_SOON,
 			name: 'Area Demand',
 			icon: 'fa-map-location',
@@ -124,6 +128,7 @@ export const widgets: Widget[] = [
 			status: STATUS.COMING_SOON,
 			name: 'Profits/Cost Table',
 			icon: 'fa-euro-sign',
+			helper: null,
 			about:
 				'This widget allows you to see the potential profit from selling your mix to clients/gangs and the cost of making the mix.',
 			image: '/ProfitsTable.png'
@@ -142,6 +147,7 @@ export const widgets: Widget[] = [
 		id: 5,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			helper: null,
 			status: STATUS.COMING_SOON,
 			name: 'Stats',
 			icon: 'fa-chart-simple',
@@ -162,6 +168,7 @@ export const widgets: Widget[] = [
 		id: 6,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			helper: null,
 			status: STATUS.COMING_SOON,
 			name: 'Actions',
 			icon: 'fa-hand-dots',
@@ -181,6 +188,7 @@ export const widgets: Widget[] = [
 		id: 7,
 		collapsed: { active: false, w: 0, h: 0 },
 		data: {
+			helper: null,
 			status: STATUS.BETA,
 			name: 'Crop Planner',
 			icon: 'fa-cannabis',
