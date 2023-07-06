@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ColorIndicator from './ColorIndicator.svelte';
 	import { fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import type { Ingredient } from '$lib/helpers/mix';
@@ -92,8 +93,8 @@
 		}
 		return color;
 	}
-	function popupIngrInfo(id: string): PopupSettings {
-		return { event: 'hover', target: `popupIngrInfo-${id}`, placement: 'top' };
+	function popupIngrInfo(id: string, option: 'tox' | 'addict' | 'str' | 'mixstr'): PopupSettings {
+		return { event: 'hover', target: `popupIngrInfo-${option}-${id}`, placement: 'top' };
 	}
 </script>
 
@@ -182,57 +183,33 @@
 						>
 							<div
 								class="card z-50 text-xs variant-filled-secondary"
-								data-popup={`popupIngrInfo-${ingredient.id}`}
+								data-popup={`popupIngrInfo-tox-${ingredient.id}`}
 							>
-								<div class="flex">
-									<div class="">
-										<div class="flex p-1 truncate items-center w-full justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-cyan-500 bg-cyan-400 w-3 h-3"
-											/>
-											<span class="capitalize">very low</span>
-										</div>
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-yellow-500 bg-yellow-400 w-3 h-3"
-											/>
-											<span class="capitalize">medium</span>
-										</div>
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-orange-500 bg-orange-400 w-3 h-3"
-											/>
-											<span class="capitalize">very high</span>
-										</div>
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-black bg-black w-3 h-3"
-											/>
-											<span class="capitalize">deadly</span>
-										</div>
-									</div>
-									<div class="">
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-blue-500 bg-blue-400 w-3 h-3"
-											/>
-											<span class="capitalize">low</span>
-										</div>
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-green-500 bg-green-400 w-3 h-3"
-											/>
-											<span class="capitalize">high</span>
-										</div>
+								<ColorIndicator />
 
-										<div class="flex p-1 truncate w-full items-center justify-start gap-2">
-											<div
-												class="rounded-full ring-1 dark:ring-white ring-black dark:bg-red-500 bg-red-400 w-3 h-3"
-											/>
-											<span class="capitalize">dangerous</span>
-										</div>
-									</div>
-								</div>
+								<div class="arrow variant-filled-secondary" />
+							</div>
+							<div
+								class="card z-50 text-xs variant-filled-secondary"
+								data-popup={`popupIngrInfo-addict-${ingredient.id}`}
+							>
+								<ColorIndicator />
+
+								<div class="arrow variant-filled-secondary" />
+							</div>
+							<div
+								class="card z-50 text-xs variant-filled-secondary"
+								data-popup={`popupIngrInfo-str-${ingredient.id}`}
+							>
+								<ColorIndicator />
+
+								<div class="arrow variant-filled-secondary" />
+							</div>
+							<div
+								class="card z-50 text-xs variant-filled-secondary"
+								data-popup={`popupIngrInfo-mixstr-${ingredient.id}`}
+							>
+								<ColorIndicator />
 
 								<div class="arrow variant-filled-secondary" />
 							</div>
@@ -262,7 +239,7 @@
 								class="flex capitalize gap-2 p-2 flex-wrap w-fit h-fit items-center justify-center"
 							>
 								<button
-									use:popup={popupIngrInfo(ingredient.id)}
+									use:popup={popupIngrInfo(ingredient.id, 'tox')}
 									on:click={(e) => {
 										e.stopPropagation();
 									}}
@@ -271,7 +248,7 @@
 									)}`}>tox: {ingredient.toxicity.toFixed(1)}</button
 								>
 								<button
-									use:popup={popupIngrInfo(ingredient.id)}
+									use:popup={popupIngrInfo(ingredient.id, 'str')}
 									on:click={(e) => {
 										e.stopPropagation();
 									}}
@@ -280,7 +257,7 @@
 									)}`}>str: {ingredient.strength.toFixed(1)}</button
 								>
 								<button
-									use:popup={popupIngrInfo(ingredient.id)}
+									use:popup={popupIngrInfo(ingredient.id, 'addict')}
 									on:click={(e) => {
 										e.stopPropagation();
 									}}
@@ -289,7 +266,7 @@
 									)}`}>addict: {ingredient.addiction.toFixed(1)}</button
 								>
 								<button
-									use:popup={popupIngrInfo(ingredient.id)}
+									use:popup={popupIngrInfo(ingredient.id, 'mixstr')}
 									on:click={(e) => {
 										e.stopPropagation();
 									}}
