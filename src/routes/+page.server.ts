@@ -2,13 +2,8 @@ import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
 import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 import type { Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import type { Session } from '$lib/types/authjs-svelte';
-export const load: PageServerLoad = async (event) => {
-	const session = (await event.locals.getSession()) as unknown as Session | null;
-
-	return {
-		session
-	};
+export const load: PageServerLoad = async ({ url }) => {
+	return { url: url.origin };
 };
 export const actions: Actions = {
 	// This action is called when the user clicks the theme button

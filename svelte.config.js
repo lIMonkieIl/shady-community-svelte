@@ -1,24 +1,28 @@
+// Import necessary modules and functions
 import adapter from '@sveltejs/adapter-auto';
-import * as child_process from 'node:child_process';
 import { vitePreprocess } from '@sveltejs/kit/vite';
+
+// Define the configuration object
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
+	// Specify the preprocess function to use with Vite
 	preprocess: vitePreprocess(),
 
+	// Vite plugin configuration
 	vitePlugin: {
 		inspector: true
 	},
+	// SvelteKit configuration
 	kit: {
-		version: {
-			name: child_process.execSync('git rev-parse HEAD').toString().trim(),
-			pollInterval: 10000
-		},
-		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-		// If your environment is not supported or you settled on a specific environment, switch out the adapter.
+		// Use the 'adapter-auto' adapter for deployment
+		// This adapter automatically selects an appropriate adapter based on the environment
+		// Consult the SvelteKit documentation for supported environments and adapter options
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter()
 	}
 };
+
+// Export the configuration object as the default export
 export default config;

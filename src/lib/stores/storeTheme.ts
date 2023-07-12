@@ -15,8 +15,17 @@ export const skeletonThemes = [
 ] as const;
 
 export const customThemes = [
-	{ type: 'greenie', name: 'greenie', icon: '☘️' },
-	{ type: 'blueish', name: 'blueish', icon: '🔷' }
+	{ type: 'euphoria', name: 'euphoria', icon: '✨' },
+	{ type: 'essence', name: 'essence', icon: '🎉' },
+	{ type: 'refined_times', name: 'refined times', icon: '🕰️' },
+	{ type: 'rustic_romance', name: 'rustic romance', icon: '🕯️' },
+	{ type: 'techscape', name: 'techscape', icon: '💻' },
+	{ type: 'serene_seas', name: 'serene seas', icon: '🌊' },
+	{ type: 'raspberry_crush', name: 'raspberry crush', icon: '🍓' },
+	{ type: 'dark_mint', name: 'dark mint', icon: '🌿' },
+	{ type: 'radiant_orchid', name: 'radiant orchid', icon: '🌸' },
+	{ type: 'enchanted_rose', name: 'enchanted rose', icon: '🌹' },
+	{ type: 'citrus_burst', name: 'citrus burst', icon: '🍋' }
 ] as const;
 
 function createStoreTheme() {

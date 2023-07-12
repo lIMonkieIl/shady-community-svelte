@@ -12,7 +12,7 @@
 	/**
 	 * * Most of the app wide CSS is in this file
 	 */
-	import '../../app.postcss';
+	import './../app.postcss';
 
 	/**
 	 * * Dependency: Floating UI
@@ -29,7 +29,7 @@
 	/**
 	 * * Types
 	 */
-	import type { LayoutServerData } from './$types';
+	import type { LayoutData, LayoutServerData } from './$types';
 
 	/**
 	 * * Stores
@@ -42,11 +42,12 @@
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import AppBar from '$lib/components/AppBar.svelte';
 	import { page } from '$app/stores';
-	import { beforeNavigate } from '$app/navigation';
+	import { beforeNavigate, invalidate } from '$app/navigation';
 	import { updated } from '$app/stores';
 	import Drawer from '$lib/components/Drawer.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import ThemeChanger from '$lib/components/ThemeChanger.svelte';
+	import { onMount } from 'svelte';
 
 	/**
 	 * * Set body `data-theme` based on current theme status
@@ -100,7 +101,7 @@
 	/**
 	 * * Exports
 	 */
-	export let data: LayoutServerData;
+	export let data: LayoutServerData & LayoutData;
 
 	/**
 	 * Reactive
@@ -119,6 +120,47 @@
 			location.href = to.url.href;
 		}
 	});
+	let { supabase, session } = data;
+	$: ({ supabase, session } = data);
+
+	onMount(() => {
+		const {
+			data: { subscription }
+		} = supabase.auth.onAuthStateChange((event, _session) => {
+			if (_session?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		return () => subscription.unsubscribe();
+	});
+	// 	<AppShell>
+	// 	<!--* Header -->
+	// 	<svelte:fragment slot="header">
+	// 		<!--* App Bar -->
+	// 		<AppBar {data} />
+	// 	</svelte:fragment>
+
+	// 	<!--* Sidebar (Left) -->
+	// 	<svelte:fragment slot="sidebarLeft">
+	// 		<Sidebar class={'hidden lg:block'} />
+	// 	</svelte:fragment>
+
+	// 	<!--* Page Content -->
+	// 	<slot />
+
+	// 	<!--* Page Footer -->
+	// 	<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
+	// 	<svelte:fragment slot="footer">
+	// 		<div class="absolute bottom-2 right-2">
+	// 			<ThemeChanger />
+	// 		</div>
+	// 	</svelte:fragment>
+	// </AppShell>
+
+	function captchaCallback(e: any) {
+		console.log(e);
+	}
 </script>
 
 <!--* App Shell -->
@@ -153,33 +195,12 @@
 	<meta name="twitter:title" content={meta.twitter.title} />
 	<meta name="twitter:description" content={meta.twitter.description} />
 	<meta name="twitter:image" content={meta.twitter.image} />
-
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 	<!--! Select Preset Theme CSS DO NOT REMOVE ESCAPES-->
 	{@html `\<style\>${currentTheme}}\</style\>`}
 </svelte:head>
 
 <Drawer />
 <Toast position={'tr'} class={'pt-16'} background={'card'} />
-<AppShell>
-	<!--* Header -->
-	<svelte:fragment slot="header">
-		<!--* App Bar -->
-		<AppBar />
-	</svelte:fragment>
-
-	<!--* Sidebar (Left) -->
-	<svelte:fragment slot="sidebarLeft">
-		<Sidebar class={'hidden lg:block'} />
-	</svelte:fragment>
-
-	<!--* Page Content -->
-	<slot />
-
-	<!--* Page Footer -->
-	<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
-	<svelte:fragment slot="footer">
-		<div class="absolute bottom-2 right-2">
-			<ThemeChanger />
-		</div>
-	</svelte:fragment>
-</AppShell>
+<div class="cf-turnstile" data-sitekey="0x4AAAAAAAHQRUEAolaTezbW" data-callback={captchaCallback} />
+<slot><!-- optional fallback --></slot>

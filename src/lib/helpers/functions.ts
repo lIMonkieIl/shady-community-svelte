@@ -27,3 +27,13 @@ export function isSkeletonTheme(name: SkeletonThemes['type']): boolean {
 }
 
 export const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max);
+
+/**
+ * Check if the requested URL matches any of the provided routes
+ * @param urlPathname The pathname of the requested URL
+ * @param routes An array of routes to match against
+ * @returns true if the URL matches any of the routes, false otherwise
+ */
+export function matchesRoute(urlPathname: string, routes: string[]): boolean {
+	return routes.some((route) => urlPathname.startsWith(route));
+}

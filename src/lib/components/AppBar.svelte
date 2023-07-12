@@ -3,7 +3,9 @@
 	import ThemeChanger from './ThemeChanger.svelte';
 	import { drawerStore, type DrawerSettings, AppBar } from '@skeletonlabs/skeleton';
 	import AppBarLogo from './AppBarLogo.svelte';
+	import type { PageData } from '../../routes/$types';
 
+	export let data: PageData;
 	// Drawer Handler
 	function drawerOpen(): void {
 		const s: DrawerSettings = {
@@ -27,6 +29,6 @@
 		</div>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		<AuthButton />
+		<AuthButton {data} />
 	</svelte:fragment>
 </AppBar>

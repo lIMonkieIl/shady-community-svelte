@@ -5,7 +5,6 @@
 	import type { Ingredient } from '$lib/helpers/mix';
 
 	import { ListBox, ListBoxItem, popup, type PopupSettings } from '@skeletonlabs/skeleton';
-	import { storeMix } from '$lib/stores/storeMix';
 	import Card from './Card.svelte';
 	const popupSearchFilter: PopupSettings = {
 		event: 'focus-click',
@@ -21,16 +20,16 @@
 	let searchFilters = [...ingredients.map((i) => i.category).filter(onlyUnique), 'all'];
 	let searchFilterValue: string = 'all';
 	$: items = ingredients
-		.filter((ingr) => {
-			const found = $storeMix.madeWith.find((madewith) => {
-				if (ingr.id === madewith.ingredientId) {
-					return madewith;
-				}
-			});
-			if (!found) {
-				return ingr;
-			}
-		})
+		// .filter((ingr) => {
+		// 	const found = $storeMix.madeWith.find((madewith) => {
+		// 		if (ingr.id === madewith.ingredientId) {
+		// 			return madewith;
+		// 		}
+		// 	});
+		// 	if (!found) {
+		// 		return ingr;
+		// 	}
+		// })
 		.filter((ingr) => {
 			if (searchFilterValue === 'all' || searchFilterValue === ingr.category) {
 				return ingr;
@@ -170,8 +169,7 @@
 
 							<button
 								on:click={(e) => {
-									e.stopPropagation();
-									storeMix.actions.addIngr(ingredient.id);
+									alert('not implemented');
 								}}
 								class="btn p-1 w-full h-fit variant-ghost-secondary">add</button
 							>

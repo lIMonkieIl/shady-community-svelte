@@ -1,10 +1,8 @@
 <script lang="ts">
 	import SelectionBoard from './SelectionBoard.svelte';
-	import { storeMix, type Mix } from '$lib/stores/storeMix';
 	import { flip } from 'svelte/animate';
 	import IngredientsData from '$lib/data/Ingredients.json';
 	import DrugsData from '$lib/data/Drugs.json';
-	import JSONTree from 'svelte-json-tree';
 	import {
 		ListBox,
 		ListBoxItem,
@@ -18,7 +16,6 @@
 	import type { Ingredient } from '$lib/helpers/mix';
 
 	let viewValue: number = 0;
-	$: if (!$storeMix.madeWith.length) viewValue = 1;
 	export let ingredients: Ingredient[];
 </script>
 

@@ -1,63 +1,76 @@
-import { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '$env/static/private';
-import { SvelteKitAuth } from '@auth/sveltekit';
-import type { User } from '$lib/types/authjs-svelte';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-export const handle = SvelteKitAuth({
-	providers: [
-		{
-			id: 'discord',
-			name: 'Discord',
-			type: 'oauth',
-			authorization: 'https://discord.com/api/oauth2/authorize?scope=identify+email',
-			token: 'https://discord.com/api/oauth2/token',
-			userinfo: 'https://discord.com/api/users/@me',
-			clientId: DISCORD_CLIENT_ID,
-			clientSecret: DISCORD_CLIENT_SECRET,
+// ./src/hooks.server.ts
 
-			profile(profile) {
-				if (profile.avatar === null || profile.avatar === undefined) {
-					const defaultAvatarNumber = parseInt(String(profile.discriminator)) % 5;
-					profile.image_url = `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
-				} else {
-					const format = String(profile.avatar).startsWith('a_') ? 'gif' : 'png';
-					profile.image_url = `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`;
-				}
-				return {
-					id: profile.id as string,
-					discordId: profile.id as string,
-					username: profile.username as string,
-					email: profile.email as string,
-					emailVerified: profile.email_verified,
-					avatar: profile.image_url as string
-				};
-			}
-		}
-	],
-	adapter: PrismaAdapter(prisma),
-	session: {
-		strategy: 'database',
-		// Seconds - How long until an idle session expires and is no longer valid.
-		maxAge: 30 * 24 * 60 * 60, // 30 days
+/**
+ * Import external dependencies
+ */
+import { redirect, type Handle } from '@sveltejs/kit';
 
-		// Seconds - Throttle how frequently to write to database to extend a session.
-		// Use it to limit write operations. Set to 0 to always update the database.
-		// Note: This option is ignored if using JSON Web Tokens
-		updateAge: 24 * 60 * 60 // 24 hours
-	},
-	callbacks: {
-		async session({ session, user, newSession, trigger }) {
-			const myUser = user as unknown as User;
-			const sessionUser = {
-				discordId: myUser.discordId,
-				username: myUser.username,
-				email: myUser.email,
-				avatar: myUser.avatar,
-				displayName: myUser.displayName
-			};
-			session.user = sessionUser;
-			return session;
+/**
+ * Import functions
+ */
+import { matchesRoute } from '$lib/helpers/functions';
+
+/**
+ * Import environment variables for Supabase URL and key
+ */
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+
+/**
+ * Import types
+ */
+import type { Session } from '$lib/types/types';
+
+/**
+ * Import Supabase server client helper
+ */
+import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
+
+/**
+ * Define the server-side handle function
+ */
+export const handle: Handle = async ({ event, resolve }) => {
+	/**
+	 * Create a Supabase server client using the provided Supabase URL, key, and event
+	 */
+	event.locals.supabase = createSupabaseServerClient({
+		supabaseUrl: PUBLIC_SUPABASE_URL,
+		supabaseKey: PUBLIC_SUPABASE_ANON_KEY,
+		event
+	});
+
+	/**
+	 * Define a function to get the user session
+	 * ? A convenience helper so we can just call await getSession() instead of const { data: { session } } = await supabase.auth.getSession()
+	 */
+	event.locals.getSession = async () => {
+		const {
+			data: { session }
+		} = await event.locals.supabase.auth.getSession();
+		/**
+		 * Extending the type from supabase.user to get type safety from user.user_metadata
+		 */
+		return session as unknown as Session;
+	};
+
+	if (matchesRoute(event.url.pathname, ['/profile'])) {
+		/**
+		 * Get the user session
+		 */
+		const session = await event.locals.getSession();
+		if (!session) {
+			/**
+			 * If the user is not signed in, redirect them to the home page
+			 */
+			throw redirect(303, '/');
 		}
 	}
-});
+
+	/**
+	 * Return the resolved event with a filter for serialized response headers
+	 */
+	return resolve(event, {
+		filterSerializedResponseHeaders(name) {
+			return name === 'content-range';
+		}
+	});
+};

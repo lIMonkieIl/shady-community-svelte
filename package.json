@@ -3,14 +3,14 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"postinstall": "prisma generate",
 		"dev": "vite dev ",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
-		"format": "prettier --plugin-search-dir . --write ."
+		"format": "prettier --plugin-search-dir . --write .",
+		"supabase-gen-types": "node supabase-gen-types.js"
 	},
 	"repository": {
 		"type": "git",
@@ -21,6 +21,8 @@
 	"devDependencies": {
 		"@floating-ui/dom": "^1.4.3",
 		"@skeletonlabs/skeleton": "^1.9.0",
+		"@supabase/auth-helpers-sveltekit": "^0.10.1",
+		"@supabase/supabase-js": "^2.26.0",
 		"@sveltejs/adapter-auto": "^2.1.0",
 		"@sveltejs/kit": "^1.22.0",
 		"@tailwindcss/forms": "^0.5.3",
@@ -36,7 +38,7 @@
 		"postcss": "^8.4.24",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
-		"prisma": "^4.16.2",
+		"supabase": "^1.75.3",
 		"svelte": "^4.0.4",
 		"svelte-check": "^3.4.4",
 		"svelte-dnd-action": "^0.9.22",
@@ -48,20 +50,14 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@auth/core": "^0.9.0",
-		"@auth/prisma-adapter": "^1.0.0",
-		"@auth/sveltekit": "^0.3.3",
 		"@neodrag/svelte": "^2.0.3",
-		"@prisma/client": "4.16.2",
-		"@vercel/postgres": "^0.4.0",
+		"@supabase/auth-ui-shared": "^0.1.6",
+		"@supabase/auth-ui-svelte": "^0.2.2",
+		"dotenv": "^16.3.1",
 		"muuri": "^0.9.5",
-		"svelte-json-tree": "^1.0.0",
 		"svelte-moveable": "^0.40.0"
 	},
 	"peerDependencies": {
 		"svelte": "^3.54.0"
-	},
-	"prisma": {
-		"seed": "ts-node --esm prisma/seed.ts"
 	}
 }

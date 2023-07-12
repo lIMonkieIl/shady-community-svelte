@@ -138,3 +138,24 @@ export type safeHeight =
 	| 'h-min'
 	| 'h-max'
 	| 'h-fit';
+// Import the necessary types from '@supabase/supabase-js'
+import type { Session as SupabaseSession, User } from '@supabase/supabase-js';
+
+// Import the Database type from './supabase.types'
+import type { Database } from './supabase.types';
+
+// Define the 'Session' type by extending the 'SupabaseSession' type from '@supabase/supabase-js'
+// It includes additional properties from the 'User' type and custom properties for user metadata
+export type Session = SupabaseSession & {
+	user: User & {
+		user_metadata: {
+			full_name: string;
+			sub: string;
+			avatar_url: string;
+		};
+	};
+};
+
+export enum AUTH_ERROR {
+	DISABLED = 'Signups not allowed for this instance'
+}
