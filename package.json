@@ -42,6 +42,7 @@
 		"svelte": "^4.0.4",
 		"svelte-check": "^3.4.4",
 		"svelte-dnd-action": "^0.9.22",
+		"svelte-turnstile": "^0.5.0",
 		"tailwindcss": "^3.3.2",
 		"ts-node": "^10.9.1",
 		"tslib": "^2.6.0",

@@ -134,33 +134,23 @@
 
 		return () => subscription.unsubscribe();
 	});
-	// 	<AppShell>
-	// 	<!--* Header -->
-	// 	<svelte:fragment slot="header">
-	// 		<!--* App Bar -->
-	// 		<AppBar {data} />
-	// 	</svelte:fragment>
 
-	// 	<!--* Sidebar (Left) -->
-	// 	<svelte:fragment slot="sidebarLeft">
-	// 		<Sidebar class={'hidden lg:block'} />
-	// 	</svelte:fragment>
-
-	// 	<!--* Page Content -->
-	// 	<slot />
-
-	// 	<!--* Page Footer -->
-	// 	<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
-	// 	<svelte:fragment slot="footer">
-	// 		<div class="absolute bottom-2 right-2">
-	// 			<ThemeChanger />
-	// 		</div>
-	// 	</svelte:fragment>
-	// </AppShell>
-
-	function captchaCallback(e: any) {
+	import { Turnstile } from 'svelte-turnstile';
+	let captchaPassed = false;
+	function turnstileCallback(e: CustomEvent<{ token: string }>) {
+		captchaPassed = true;
+	}
+	function turnstileError(e: CustomEvent<{}>) {
 		console.log(e);
 	}
+	function turnstileExpired(e: CustomEvent<{}>) {
+		console.log(e);
+	}
+
+	function turnstileTimeout(e: CustomEvent<{}>) {
+		console.log(e);
+	}
+	export let form;
 </script>
 
 <!--* App Shell -->
@@ -195,12 +185,38 @@
 	<meta name="twitter:title" content={meta.twitter.title} />
 	<meta name="twitter:description" content={meta.twitter.description} />
 	<meta name="twitter:image" content={meta.twitter.image} />
-	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 	<!--! Select Preset Theme CSS DO NOT REMOVE ESCAPES-->
 	{@html `\<style\>${currentTheme}}\</style\>`}
 </svelte:head>
+{#if captchaPassed}
+	<Drawer />
+	<Toast position={'tr'} class={'pt-16'} background={'card'} />
+	<AppShell>
+		<!--* Header -->
+		<svelte:fragment slot="header">
+			<!--* App Bar -->
+			<AppBar {data} />
+		</svelte:fragment>
 
-<Drawer />
-<Toast position={'tr'} class={'pt-16'} background={'card'} />
-<div class="cf-turnstile" data-sitekey="0x4AAAAAAAHQRUEAolaTezbW" data-callback={captchaCallback} />
-<slot><!-- optional fallback --></slot>
+		<!--* Sidebar (Left) -->
+		<svelte:fragment slot="sidebarLeft">
+			<Sidebar class={'hidden lg:block'} />
+		</svelte:fragment>
+
+		<!--* Page Content -->
+		<slot />
+
+		<!--* Page Footer -->
+		<svelte:fragment slot="pageFooter"><div class="min-h-[15px]" /></svelte:fragment>
+		<svelte:fragment slot="footer">
+			<div class="absolute bottom-2 right-2">
+				<ThemeChanger />
+			</div>
+		</svelte:fragment>
+	</AppShell>
+{:else}
+	<form method="POST" action="?/captcha">
+		<Turnstile siteKey="0x4AAAAAAAHQRUEAolaTezbW" theme="dark" />
+	</form>
+{/if}
+<p>ccc {JSON.stringify(form)}</p>

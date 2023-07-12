@@ -1,4 +1,4 @@
-import { customThemeExists, isSkeletonTheme } from '$lib/helpers/functions';
+import { customThemeExists, isSkeletonTheme, validateToken } from '$lib/helpers/functions';
 import type { CustomTheme, SkeletonThemes } from '$lib/types/types';
 import type { Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
@@ -22,5 +22,23 @@ export const actions: Actions = {
 			cookies.set('theme', 'skeleton', { path: '/' });
 			return { theme: 'skeleton' };
 		}
+	},
+	captcha: async ({ request }) => {
+		const data = await request.formData();
+
+		const token = data.get('cf-turnstile-response') as string; // if you edited the formsField option change this
+		const SECRET_KEY = '0x4AAAAAAAHQRV4rt6EK2w7zO4Ykzc7V3_0'; // you should use $env module for secrets
+		const { success, error } = await validateToken(token, SECRET_KEY);
+
+		if (!success)
+			return {
+				success: false,
+				error: error || 'Invalid CAPTCHA'
+			};
+
+		return {
+			seccess: true,
+			token: token
+		};
 	}
 };
